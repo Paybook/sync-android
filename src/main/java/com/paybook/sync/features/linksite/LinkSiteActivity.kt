@@ -109,6 +109,10 @@ class LinkSiteActivity : BaseActivity(), LinkSiteContract.View {
     startService(i)
   }
 
+  override fun showError(message: String) {
+    Snackbar.make(credentialsView, message, Snackbar.LENGTH_LONG).show()
+  }
+
   override fun showNetworkError() {
     Snackbar.make(credentialsView, R.string.msg_network_error, Snackbar.LENGTH_SHORT).show()
   }

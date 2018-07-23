@@ -2,12 +2,13 @@ package com.paybook.sync.features.linksite
 
 import com.paybook.core.exception.OnErrorNotImplementedException
 import com.paybook.sync.SyncModule
-import com.paybook.sync.networkModels.AddAccountRequest
-import com.paybook.sync.features.linkingsite.LinkingSiteData
-import com.paybook.sync.useCases.LinkAccountUseCase
 import com.paybook.sync.entities.LinkSiteRequest
 import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
+import com.paybook.sync.features.linkingsite.LinkingSiteData
+import com.paybook.sync.networkModels.AddAccountRequest
+import com.paybook.sync.unsucessful.UnsuccesfulResponseException
+import com.paybook.sync.useCases.LinkAccountUseCase
 import io.reactivex.disposables.Disposable
 
 /**
@@ -35,18 +36,25 @@ class LinkSitePresenter(
         .subscribe({ result ->
           view.hideLoadingIndicator()
           when {
-            result.isNetworkError -> view.showNetworkError()
-            result.isError -> {
-            }
-            else -> {
+            result.isSuccess -> {
               val addingAccount = result.body()!!.map()
               val data = LinkingSiteData(organization, site, addingAccount.jobId)
               navigator.openLinkingSiteScreen(data)
               view.startLinkingAccount(addingAccount)
             }
+            result.isNetworkError -> view.showNetworkError()
+            else -> {
+              val error = result.error()
+              if (error is UnsuccesfulResponseException) {
+                view.showError(error.response.message())
+              } else {
+                throw error
+              }
+            }
           }
-        }, { t ->
-          OnErrorNotImplementedException.rethrow(t, javaClass) }
-        )
+        }) { t ->
+          OnErrorNotImplementedException.rethrow(t, javaClass)
+        }
+
   }
 }

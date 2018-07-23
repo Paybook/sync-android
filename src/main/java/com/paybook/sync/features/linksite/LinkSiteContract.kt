@@ -21,6 +21,7 @@ interface LinkSiteContract {
     fun showLoadingIndicator()
     fun hideLoadingIndicator()
     fun showAccountConnected()
+    fun showError(message: String)
   }
 
   interface Presenter {
