@@ -1,0 +1,102 @@
+<resources>
+
+  <style name="SyncTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/main_primary_color</item>
+    <item name="colorPrimaryDark">@color/main_primary_dark_color</item>
+    <item name="colorAccent">@color/green_success</item>
+    <item name="android:windowBackground">@color/md_grey_50</item>
+    <item name="android:actionMenuTextAppearance">@style/DrawerItemAppearance</item>
+    <item name="android:fontFamily">@font/open_sans</item>
+  </style>
+
+  <style name="DrawerItemAppearance" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+    <item name="android:textAppearanceListItem">@style/TextAppearance.AppCompat.Body2</item>
+    <item name="android:textColor">@color/textPrimaryLightBg</item>
+    <item name="android:paddingTop">@dimen/margin_sm</item>
+    <item name="android:paddingBottom">@dimen/margin_sm</item>
+    <item name="android:fontFamily">@font/open_sans</item>
+  </style>
+
+  <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+  </style>
+  <style name="Toolbar.Light" parent="ThemeOverlay.AppCompat.ActionBar"/>
+
+  <style name="Toolbar.PopUp" parent="ThemeOverlay.AppCompat.ActionBar"/>
+  <style name="Toolbar.Light.PopUp" parent="ThemeOverlay.AppCompat.Dark"/>
+
+  <style name="Toolbar.Title" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
+    <item name="android:fontFamily">@font/open_sans_bold</item>
+  </style>
+
+  <style name="MainButton" parent="Base.Widget.AppCompat.Button">
+    <item name="android:background">@color/colorPaybook</item>
+    <item name="android:textColor">@color/md_white_1000</item>
+    <item name="android:fontFamily">@font/open_sans</item>
+  </style>
+
+  <style name="MainButton.Normal" parent="MainButton">
+    <item name="android:layout_height">@dimen/button_nl</item>
+  </style>
+
+  <style name="MainButton.Large" parent="MainButton">
+    <item name="android:layout_height">@dimen/button_lg</item>
+  </style>
+
+  <style name="MainButton.Small" parent="MainButton">
+    <item name="android:layout_height">@dimen/button_sm</item>
+  </style>
+
+  <style name="SecondaryButton" parent="Base.Widget.AppCompat.Button">
+    <item name="android:background">@color/md_grey_100</item>
+    <item name="android:textColor">@color/textPrimaryLightBg</item>
+    <item name="android:fontFamily">@font/open_sans</item>
+  </style>
+
+  <style name="SecondaryButton.Normal" parent="SecondaryButton">
+    <item name="android:layout_height">@dimen/button_nl</item>
+  </style>
+
+  <style name="SecondaryButton.Large" parent="SecondaryButton">
+    <item name="android:layout_height">@dimen/button_lg</item>
+  </style>
+
+  <style name="SecondaryButton.Small" parent="SecondaryButton">
+    <item name="android:layout_height">@dimen/button_sm</item>
+  </style>
+
+  <style name="BodyTextView">
+    <item name="android:textColor">@color/textPrimaryLightBg</item>
+    <item name="android:textSize">@dimen/fs_body_regular</item>
+    <item name="android:fontFamily">@font/open_sans</item>
+  </style>
+
+  <style name="BodyTextView.Bold" parent="BodyTextView">
+    <item name="android:textStyle">bold</item>
+    <item name="android:fontFamily">@font/open_sans</item>
+  </style>
+
+  <style name="BodyTextView.DarkBackground">
+    <item name="android:textColor">@color/textPrimaryDarkBg</item>
+    <item name="android:textSize">@dimen/fs_body_regular</item>
+    <item name="android:fontFamily">@font/open_sans</item>
+  </style>
+
+  <style name="TitleTextView">
+    <item name="android:textSize">@dimen/fs_title_regular</item>
+    <item name="android:textColor">@color/textPrimaryLightBg</item>
+    <item name="android:fontFamily">@font/open_sans</item>
+  </style>
+
+  <style name="TitleTextView.Bold" parent="TitleTextView">
+    <item name="android:textStyle">bold</item>
+    <item name="android:fontFamily">@font/open_sans</item>
+  </style>
+
+  <style name="SuccessButton">
+    <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    <item name="android:background">@drawable/background_success_button</item>
+    <item name="android:textColor">@color/md_white_1000</item>
+    <item name="android:fontFamily">@font/open_sans</item>
+  </style>
+</resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--Margins-->
+  <dimen name="margin_tn">4dp</dimen>
+  <dimen name="margin_sm">8dp</dimen>
+  <dimen name="margin_nl">16dp</dimen>
+  <dimen name="margin_lg">24dp</dimen>
+  <dimen name="margin_xl">36dp</dimen>
+  <dimen name="margin_xxl">52dp</dimen>
+  <dimen name="margin_xxxl">72dp</dimen>
+  <!--End margins-->
+
+  <!--Buttons-->
+  <dimen name="button_sm">24dp</dimen>
+  <dimen name="button_nl">36dp</dimen>
+  <dimen name="button_lg">48dp</dimen>
+  <dimen name="button_xl">64dp</dimen>
+  <!--End buttons-->
+
+
+  <!--Fonts-->
+  <dimen name="fs_display_four">112sp</dimen>
+  <dimen name="fs_display_three">56sp</dimen>
+  <dimen name="fs_display_two">45sp</dimen>
+  <dimen name="fs_display_one">34sp</dimen>
+  <dimen name="fs_headline">24sp</dimen>
+
+  <dimen name="fs_title_regular">20sp</dimen>
+  <dimen name="fs_title_dense">21sp</dimen>
+  <dimen name="fs_title_tall">21sp</dimen>
+
+  <dimen name="fs_subheading_regular">16sp</dimen>
+  <dimen name="fs_subheading_dense">17sp</dimen>
+  <dimen name="fs_subheading_tall">17sp</dimen>
+
+  <dimen name="fs_body_regular">14sp</dimen>
+  <dimen name="fs_body_dense">15sp</dimen>
+  <dimen name="fs_body_tall">15sp</dimen>
+
+  <dimen name="fs_caption_regular">12sp</dimen>
+  <dimen name="fs_caption_dense">13sp</dimen>
+  <dimen name="fs_caption_tall">13sp</dimen>
+  <dimen name="elevation_nl">4dp</dimen>
+  <dimen name="nav_drawer_width">280dp</dimen>
+  <dimen name="nav_drawer_cover_height">140dp</dimen>
+  <dimen name="avatar_width">64dp</dimen>
+  <dimen name="avatar_height">64dp</dimen>
+  <!--End fonts-->
+</resources>

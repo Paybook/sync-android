@@ -1,0 +1,28 @@
+<resources>
+  <string name="notification_title_success_link_account">Linked your %s account</string>
+  <string name="notification_title_error_link_account">Error linking your %s account</string>
+  <string name="notification_title_progress_link_account">Linking your %s account</string>
+  <string name="notification_message_linked">Your %s account was successfully linked</string>
+  <string name="notification_message_incorrect_credentials">Some of the info you provided was incorrect, click here to try again</string>
+  <string name="notification_message_account_locked">It seems that your account was locked, please go to your bank website</string>
+  <string name="notification_message_logged_in">You are already logged in, please log out and try again</string>
+  <string name="notification_message_more_info">We need more info to link your account</string>
+  <string name="notification_message_timeout">You took too long in confirming some details, click here to try again</string>
+  <string name="notification_message_server_busy">Paybooks servers are incredibly busy, please try again later</string>
+  <string name="notification_title_upload_images">Uploading your images</string>
+  <string name="notification_content_images_uploaded">Your images were uploaded</string>
+
+  <string name="screen_linking_site_title_error">There was a problem</string>
+  <string name="screen_linking_site_description_account_locked">It looks like your institution blocked your account, please visit your institution website or contact them to unlock your account.</string>
+  <string name="screen_linking_description_logged_in">It seems that you are already logged in to your institution, please close all sessions and try again.</string>
+  <string name="screen_linking_site_description_incorrect_credentials">Some of your login information was incorrect</string>
+  <string name="screen_linking_site_description_timeout">The sync operation took too long</string>
+  <string name="screen_linking_site_title_linked">Account linked!</string>
+  <string name="screen_linking_site_description_linked">Feel free to add another account or continue using Glass while we download your information</string>
+  <string name="screen_linking_site_title_server_error">There was a problem</string>
+  <string name="screen_linking_site_description_server_error">Our servers are incredibly busy, please try again later</string>
+  <string name="msg_network_error">Check your internet connection and try again.</string>
+  <string name="msg_unexpected_error">An unexpected server error occurred, please try again later.</string>
+  <string name="msg_please_select_image"/>
+  <string name="msg_follow_institution_instructions"/>
+</resources>

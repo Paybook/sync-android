@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="green_success_disabled">#9915BA9E</color>
+  <color name="green_success">#15BA9E</color>
+  <color name="red_warning">#FE6073</color>
+
+  <color name="main_primary_color">@color/md_blue_grey_500</color>
+  <color name="main_primary_dark_color">@color/md_blue_grey_700</color>
+  <color name="md_blue_grey_500">#607D8B</color>
+  <color name="md_blue_grey_700">#455A64</color>
+
+  <color name="textPrimaryLightBg">@color/md_grey_900</color>
+  <color name="textSecondaryLightBg">@color/md_grey_600</color>
+  <color name="textHintLightBg">@color/md_grey_500</color>
+  <color name="dividerLightBg">#1E1E1E</color>
+
+  <color name="textPrimaryDarkBg">@color/md_white_1000</color>
+  <color name="textSecondaryDarkBg">#B2B2B2</color>
+  <color name="textHintDarkBg">#7F7F7F</color>
+  <color name="dividerDarkBg">@color/md_grey_300</color>
+
+  <color name="md_grey_50">#FAFAFA</color>
+  <color name="md_grey_100">#F5F5F5</color>
+  <color name="md_grey_200">#EEEEEE</color>
+  <color name="md_grey_300">#E0E0E0</color>
+  <color name="md_grey_400">#BDBDBD</color>
+  <color name="md_grey_500">#9E9E9E</color>
+  <color name="md_grey_600">#757575</color>
+  <color name="md_grey_700">#616161</color>
+  <color name="md_grey_800">#424242</color>
+  <color name="md_grey_900">#212121</color>
+  <color name="md_black_1000">#000000</color>
+  <color name="md_white_1000">#ffffff</color>
+
+  <color name="colorPaybook">#25A1DB</color>
+</resources>

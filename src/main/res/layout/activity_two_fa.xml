@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.paybook.sync.features.twofa.simpletwofa.TwoFaActivity"
+    >
+
+  <android.support.design.widget.AppBarLayout
+      android:id="@+id/appBarLayout"
+      android:layout_width="match_parent"
+      android:layout_height="100dp"
+      android:background="@android:color/transparent"
+      >
+    <android.support.design.widget.CollapsingToolbarLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+      <ImageView
+          android:id="@+id/imgCover"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:scaleType="centerCrop"
+          />
+    </android.support.design.widget.CollapsingToolbarLayout>
+  </android.support.design.widget.AppBarLayout>
+
+  <TextView
+      android:id="@+id/txtSite"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_nl"
+      android:ellipsize="end"
+      android:fontFamily="@font/open_sans_bold"
+      android:maxLines="1"
+      android:paddingLeft="@dimen/margin_nl"
+      android:paddingRight="@dimen/margin_nl"
+      android:textColor="@color/textPrimaryLightBg"
+      android:textSize="@dimen/fs_headline"
+      app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+      tools:text="Banregio Personal"
+      />
+
+  <TextView
+      android:id="@+id/txtAdditionalInfo"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/margin_nl"
+      android:ellipsize="end"
+      android:fontFamily="@font/open_sans_regular"
+      android:maxLines="2"
+      android:paddingLeft="@dimen/margin_nl"
+      android:paddingRight="@dimen/margin_nl"
+      android:text="Additional information required."
+      android:textColor="@color/textSecondaryLightBg"
+      android:textSize="@dimen/fs_body_regular"
+      app:layout_constraintTop_toBottomOf="@id/txtSite"
+
+      />
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/listCredentials"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_marginTop="@dimen/margin_nl"
+      app:layout_constraintBottom_toTopOf="@id/btnAddSite"
+      app:layout_constraintTop_toBottomOf="@id/txtAdditionalInfo"
+      />
+
+  <com.joanzapata.iconify.widget.IconButton
+      android:id="@+id/btnAddSite"
+      android:layout_width="100dp"
+      android:layout_height="@dimen/button_lg"
+      android:layout_marginBottom="@dimen/margin_nl"
+      android:layout_marginEnd="@dimen/margin_nl"
+      android:layout_marginRight="@dimen/margin_nl"
+      android:layout_marginTop="@dimen/margin_nl"
+      android:text="{fa-check}"
+      android:textColor="@color/md_white_1000"
+      android:textSize="24sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/listCredentials"
+      tools:ignore="HardcodedText"
+      style="@style/SuccessButton"
+      />
+
+  <ProgressBar
+      android:id="@+id/loadingIndicator"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="invisible"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+</android.support.constraint.ConstraintLayout>
