@@ -45,6 +45,8 @@ class LinkSitePresenter(
               view.startLinkingAccount(addingAccount)
             }
           }
-        }, { t -> OnErrorNotImplementedException.rethrow(t, javaClass) })
+        }, { t ->
+          OnErrorNotImplementedException.rethrow(t, javaClass) }
+        )
   }
 }

@@ -3,7 +3,9 @@ package com.paybook.sync.models
 /**
  * Created by Gerardo Teruel on 5/30/18.
  */
-import com.paybook.sync.util.exception.UnsuccesfulResponseException
+import com.paybook.sync.unsucessful.UnsuccesfulResponse
+import com.paybook.sync.unsucessful.UnsuccesfulResponseConverter
+import com.paybook.sync.unsucessful.UnsuccesfulResponseException
 import okhttp3.ResponseBody
 import retrofit2.adapter.rxjava2.Result
 import java.io.IOException
@@ -35,7 +37,7 @@ class SyncResult<T>(val result: Result<T>) {
     return if (result.isError) {
       result.error() as Exception
     } else if (!result.response()!!.isSuccessful) {
-      UnsuccesfulResponseException(result.response()!!)
+      UnsuccesfulResponseException(unsuccesfulResponse())
     } else {
       IllegalStateException("Trying to get an error from a successful result")
     }
@@ -82,12 +84,7 @@ class SyncResult<T>(val result: Result<T>) {
     }
   }
 
-  fun rid(): String {
-    try {
-      return RidConverter().convert(raw()!!)
-    } catch (e: IOException) {
-      throw IllegalStateException("Couldn't open response body", e)
-    }
-
+  private fun unsuccesfulResponse(): UnsuccesfulResponse {
+    return UnsuccesfulResponseConverter().convert(result.response()!!.errorBody()!!)
   }
 }
