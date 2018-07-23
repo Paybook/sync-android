@@ -39,7 +39,7 @@ ext {
 
   groupieVersion = "2.1.0"
   retrofitVersion = '2.4.0'
-  circleImageViewVersion = '2.1.0'
+  circleImageViewVersion = '2.2.0'
 
   mockitoVersion = '1.10.19'
   hamcrestVersion = '1.3'

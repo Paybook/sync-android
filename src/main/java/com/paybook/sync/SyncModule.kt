@@ -42,12 +42,14 @@ class SyncModule private constructor() {
 
     fun configure(
       homeIntentFactory: IntentFactory,
-      token: String,
+      token: String? = null,
       icon: Int = R.drawable.sync_icon
     ) {
       this.homeIntentFactory = homeIntentFactory
       this.notificationIcon = icon
-      this.tokenRepository.setToken(token)
+      token?.let {
+        this.tokenRepository.setToken(it)
+      }
     }
 
     fun init(
