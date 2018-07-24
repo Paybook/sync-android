@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="notification_title_success_link_account">Sincronizamos tu cuenta de %s con éxito.</string>
+  <string name="notification_title_error_link_account">Hubo un error mientras sincronizamos tu cuenta de %s</string>
+  <string name="notification_title_progress_link_account">Sincronizando tu cuenta de %s</string>
+  <string name="notification_message_linked">¡Sincronizamos tu cuenta de %s!</string>
+  <string name="notification_message_incorrect_credentials">Alguna de la información no es correcta, haz click aquí para intentarlo de nuevo.</string>
+  <string name="notification_message_account_locked">Tu banco bloqueo tu cuenta, por favor ve al sitio web de tu banco.</string>
+  <string name="notification_message_logged_in">Por favor cierra sesión en tu banco antes de continuar.</string>
+  <string name="notification_message_more_info">Necesitamos más información para sincronizar tu cuenta.</string>
+  <string name="notification_message_timeout">Te tardaste demasiado en confirmar algunos datos, haz click aquí para intentarlo de nuevo.</string>
+  <string name="notification_message_server_busy">Los servidores de Paybook están muy ocupados. Por favor inténtalo de nuevo más tarde.</string>
+  <string name="notification_title_upload_images">Subiendo tus imágenes</string>
+  <string name="notification_content_images_uploaded">¡Tus imágenes ya se subieron!</string>
+
+  <string name="screen_linking_site_title_error">Hubo un problema</string>
+  <string name="screen_linking_site_description_account_locked">Parece que tu banco bloqueo tu cuenta, por favor visita su sitio web o contáctalos para desbloquear tu cuenta.</string>
+  <string name="screen_linking_description_logged_in">Parece que ya iniciaste sesión con tu banco, por favor cierra sesión e inténtalo de nuevo. </string>
+  <string name="screen_linking_site_description_incorrect_credentials">Algunos de los datos no son correctos.</string>
+  <string name="screen_linking_site_description_timeout">La operación de sincronización se demoró demasiado.</string>
+  <string name="screen_linking_site_title_linked">¡Cuenta sincronizada!</string>
+  <string name="screen_linking_site_description_linked">Utiliza la app de Glass o sincroniza otra cuenta mientras descargamos tus transacciones.</string>
+  <string name="screen_linking_site_title_server_error">Hubo un problema</string>
+  <string name="screen_linking_site_description_server_error">Los servidores de Paybook están muy ocupados. Por favor inténtalo de nuevo más tarde.</string>
+  <string name="msg_network_error">Revisa tu conexión a internet e inténtalo de nuevo</string>
+  <string name="msg_unexpected_error">Un error inesperado ocurrió, por favor inténtalo de nuevo más tarde.</string>
+  <string name="msg_please_select_image"/>
+  <string name="msg_follow_institution_instructions"/>
+  <string name="linkingAccount_title">Conectando a tu institución</string>
+  <string name="linkingAccount_description">Por favor espera un momento.</string>
+  <string name="linkingAccount_action_goToHome">Continuar</string>
+  <string name="linkingAccount_action_tryAgain">Inténtalo de nuevo</string>
+</resources>
