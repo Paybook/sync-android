@@ -17,7 +17,7 @@ data class Credential(
   val avatar: String?,
   val authorizedAt: LocalDateTime?,
   val executedAt: LocalDateTime,
-  val code: Int,
+  val code: Int?,
   val organizationId: String,
   val siteId: String
 ): Serializable {
@@ -28,6 +28,7 @@ data class Credential(
       val hours = authorizedAt?.until(now, ChronoUnit.HOURS)
 
       return when {
+        code == null -> NEEDS_ATTENTION
         code in 100..199 -> PROCESSING
         code in 500..599 -> ERROR
         hours == null || hours > 24 -> NEEDS_ATTENTION
