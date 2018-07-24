@@ -63,30 +63,33 @@ class OrganizationsRepository(
           .map { SyncResult(it) }
           .flatMap {
             if (it.isSuccess) {
-              Observable.just(it.body()!!.map())
+              Single.just(it.body()!!.map())
             } else {
-              Observable.error { it.error() }
+              Single.error { it.error() }
             }
           }
-          .flatMap {organizations ->
+          .flatMap { organizations ->
             if (SyncModule.isTest) {
               syncService.organizations(true)
                   .map { SyncResult(it) }
                   .flatMap {
                     if (it.isSuccess) {
-                      Observable.just(organizations + it.body()!!.map())
+                      Single.just(organizations + it.body()!!.map())
                     } else {
-                      Observable.error { it.error() }
+                      Single.error { it.error() }
                     }
                   }
             } else {
-              Observable.just(organizations)
+              Single.just(organizations)
             }
           }
-          .doOnNext {
-            it.forEach { it.sites.forEach { sitesRepository.add(it, it.id) } }
+          .doOnEvent { organizations, _ ->
+            organizations?.let {
+              it.forEach {
+                it.sites.forEach { sitesRepository.add(it, it.id) }
+              }
+            }
           }
-          .singleOrError()
     }
   }
 

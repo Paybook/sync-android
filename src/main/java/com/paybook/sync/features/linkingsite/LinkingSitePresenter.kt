@@ -35,7 +35,6 @@ class LinkingSitePresenter(
     if (event == TWO_FA || event == TWO_FA_IMAGES) {
       throw IllegalArgumentException("$event must be handled in its appropriate method.")
     }
-    val pass = Unit
     with(messages) {
       when (event) {
         SUCCESS -> view.showAccountLinked()

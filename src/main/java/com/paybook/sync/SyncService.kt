@@ -5,7 +5,6 @@ import com.paybook.sync.networkModels.AddAccountResponse
 import com.paybook.sync.networkModels.OrganizationsResponse
 import com.paybook.sync.networkModels.twofa.TwoFaRequest
 import com.paybook.sync.networkModels.twofa.TwoFaResponse
-import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.adapter.rxjava2.Result
 import retrofit2.http.Body
@@ -24,18 +23,18 @@ interface SyncService {
   @GET("/v1/catalogues/organizations/sites?is_disable=false&sort=-priority")
   fun organizations(
     @Query("is_test") isTest: Boolean?
-  ): Observable<Result<OrganizationsResponse>>
+  ): Single<Result<OrganizationsResponse>>
 
   @POST("/v1/credentials")
   fun addAccount(
     @Body request: AddAccountRequest
-  ): Observable<Result<AddAccountResponse>>
+  ): Single<Result<AddAccountResponse>>
 
   @POST("/v1/jobs/{jobId}/twofa")
   fun twofa(
     @Path("jobId") jobId: String,
     @Body twoFaRequest: TwoFaRequest
-  ): Observable<Result<TwoFaResponse>>
+  ): Single<Result<TwoFaResponse>>
 
   @PUT("/v1/credentials/{credentialId}/sync")
   fun sync(
