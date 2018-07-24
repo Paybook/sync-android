@@ -37,7 +37,6 @@ class LinkingSitePresenter(
     }
     val pass = Unit
     with(messages) {
-      @Suppress("UNUSED_EXPRESSION")
       when (event) {
         SUCCESS -> view.showAccountLinked()
         INCORRECT_CREDENTIALS -> view.showError(titleError(), descriptionIncorrectCredentials())
@@ -45,7 +44,7 @@ class LinkingSitePresenter(
         ALREADY_LOGGED_IN -> view.showError(titleError(), descriptionAlreadyLoggedIn())
         TIMEOUT -> view.showError(titleError(), descriptionTimeOut())
         SERVER_ERROR -> view.showPaybookError()
-        PROCESSING -> pass
+        PROCESSING -> Unit
         else -> throw IllegalStateException("Unexpected linking site event found $event")
       }
     }
