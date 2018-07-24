@@ -25,4 +25,8 @@
   <string name="msg_unexpected_error">An unexpected server error occurred, please try again later.</string>
   <string name="msg_please_select_image"/>
   <string name="msg_follow_institution_instructions"/>
+  <string name="linkingAccount_title">Connecting to your institution.</string>
+  <string name="linkingAccount_description">Please wait a moment.</string>
+  <string name="linkingAccount_action_goToHome">Go to home</string>
+  <string name="linkingAccount_action_tryAgain">Try again</string>
 </resources>
