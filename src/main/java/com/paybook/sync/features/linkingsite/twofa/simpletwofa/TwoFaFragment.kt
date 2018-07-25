@@ -1,12 +1,12 @@
 package com.paybook.sync.features.linkingsite.twofa.simpletwofa
 
-import android.content.Context
-import android.content.Intent
+import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,7 +15,7 @@ import com.paybook.sync.features.linksite.SiteCredentialsAdapter
 import com.evernote.android.state.State
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
-import com.paybook.sync.base.BaseActivity
+import com.paybook.sync.base.BaseFragment
 import com.paybook.sync.useCases.VerifyTwoFaUseCase
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.Organization
@@ -26,7 +26,7 @@ import io.reactivex.disposables.Disposable
  * Created by Gerardo Teruel on 10/16/17.
  */
 
-class TwoFaActivity : BaseActivity(), TwoFaContract.View {
+class TwoFaFragment : BaseFragment(), TwoFaContract.View {
 
   @State lateinit var event: LinkingSiteEvent
 
@@ -42,41 +42,39 @@ class TwoFaActivity : BaseActivity(), TwoFaContract.View {
 
   companion object {
 
-    const val IK_DATA = "com.paybook.sync.ui.twofa.data"
+    const val IK_DATA = "com.paybook.sync.features.linkingsite.twofa.data"
 
-    fun newIntent(
-      from: Context,
-      event: LinkingSiteEvent
-    ): Intent {
-      if (event.twoFaCredentials == null) {
-        throw IllegalStateException(
-            "Tried to access credentials when none are available " + event.toString()
-        )
-      }
-      val i = Intent(from, TwoFaActivity::class.java)
-      i.putExtra(IK_DATA, event)
-      return i
+    fun newInstance(event: LinkingSiteEvent): TwoFaFragment {
+      val fragment = TwoFaFragment()
+      val args = Bundle()
+      args.putSerializable(IK_DATA, event)
+      fragment.arguments = args
+      return fragment
     }
   }
 
-  override fun setView() {
-    setContentView(R.layout.activity_two_fa)
-    coverView = findViewById(R.id.imgCover)
-    siteNameView = findViewById(R.id.txtSite)
-    credentialsView = findViewById(R.id.listCredentials)
-    nextButton = findViewById(R.id.btnAddSite)
-    loadingIndicator = findViewById(R.id.loadingIndicator)
+  override fun getFieldsFromArguments(arguments: Bundle?) {
+    event = arguments!!.getSerializable(IK_DATA) as LinkingSiteEvent
+  }
+
+  override fun setView(
+    inflater: LayoutInflater,
+    container: ViewGroup?
+  ): View {
+    val root = inflater.inflate(R.layout.activity_two_fa, container, false)
+    coverView = root.findViewById(R.id.imgCover)
+    siteNameView = root.findViewById(R.id.txtSite)
+    credentialsView = root.findViewById(R.id.listCredentials)
+    nextButton = root.findViewById(R.id.btnAddSite)
+    loadingIndicator = root.findViewById(R.id.loadingIndicator)
+    return root
   }
 
   override fun inject() {
-    if (!::event.isInitialized) {
-      event = intent.getSerializableExtra(IK_DATA) as LinkingSiteEvent
-    }
-
-    val inflater = LayoutInflater.from(this)
+    val inflater = LayoutInflater.from(context)
     adapter = SiteCredentialsAdapter(inflater)
     credentialsView.adapter = adapter
-    credentialsView.layoutManager = LinearLayoutManager(this)
+    credentialsView.layoutManager = LinearLayoutManager(context)
 
     nextButton.setOnClickListener { sendCredentials() }
 

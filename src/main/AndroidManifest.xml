@@ -5,22 +5,16 @@
     <activity
         android:name=".features.linkingsite.LinkingSiteActivity"
         android:launchMode="singleTop"
+        android:windowSoftInputMode="stateHidden|adjustPan"
         android:theme="@style/SyncTheme"/>
 
     <activity
         android:name=".features.linksite.LinkSiteActivity"
         android:launchMode="singleTop"
-        android:windowSoftInputMode="stateHidden|adjustPan"
         android:theme="@style/SyncTheme"/>
 
     <activity
-        android:name=".features.twofa.simpletwofa.TwoFaActivity"
-        android:windowSoftInputMode="stateHidden|adjustPan"
-        android:theme="@style/SyncTheme"/>
-
-    <activity
-        android:name=".features.twofa.twofaimages.TwoFaImagesActivity"
-        android:windowSoftInputMode="stateHidden|adjustPan"
+        android:name=".features.linkingsite.twofa.twofaimages.TwoFaImagesActivity"
         android:theme="@style/SyncTheme"/>
 
     <service android:name=".features.linkingsite.background.LinkingSiteBroadcastService"/>

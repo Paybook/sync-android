@@ -15,9 +15,9 @@ import com.joanzapata.iconify.widget.IconTextView
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
 import com.paybook.sync.base.BaseActivity
-import com.paybook.sync.features.linkingsite.background.LinkingSiteBroadcastService
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.LinkingSiteEventType
+import com.paybook.sync.features.linkingsite.background.LinkingSiteBroadcastService
 import java.lang.ref.WeakReference
 
 /**
@@ -25,6 +25,31 @@ import java.lang.ref.WeakReference
  */
 
 class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
+
+  companion object {
+
+    private const val IK_DATA = "com.paybook.glass.linkingsite.data"
+    private const val IK_EVENT = "com.paybook.glass.linkingsite.event"
+
+    // Creational methods.
+    fun newIntent(
+      from: Context,
+      linkingSiteData: LinkingSiteData
+    ): Intent {
+      val i = Intent(from, LinkingSiteActivity::class.java)
+      i.putExtra(IK_DATA, linkingSiteData)
+      return i
+    }
+
+    fun twoFaIntent(
+      from: Context,
+      event: LinkingSiteEvent
+    ): Intent {
+      val i = Intent(from, LinkingSiteActivity::class.java)
+      i.putExtra(IK_DATA, event)
+      return i
+    }
+  }
 
   @State var data: LinkingSiteData? = null
 
@@ -71,8 +96,18 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
   }
 
   override fun inject() {
-    if (data == null) {
+    if (data == null && intent.hasExtra(IK_DATA)) {
       data = intent.getSerializableExtra(IK_DATA) as LinkingSiteData
+    } else if (intent.hasExtra(IK_EVENT)) {
+      val event = intent.getSerializableExtra(IK_EVENT) as LinkingSiteEvent
+      data = LinkingSiteData(
+          organization = event.organization,
+          site = event.site,
+          jobId = event.jobId
+      )
+      presenter.onEvent(event.eventType)
+    } else {
+      throw IllegalStateException("Unexpected launch without LinkingSiteData provided")
     }
 
     goToHomeView.setOnClickListener { presenter.onGoToHome() }
@@ -86,6 +121,12 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
     val messages = LinkingSiteMessages(this)
     val repository = SyncModule.linkingSiteRepository
     presenter = LinkingSitePresenter(this, navigator, messages, repository)
+  }
+
+  override fun onNewIntent(intent: Intent) {
+    val event = intent.getSerializableExtra(IK_EVENT) as LinkingSiteEvent
+    presenter.onEvent(event.eventType)
+    super.onNewIntent(intent)
   }
 
   override fun onViewCreated() {
@@ -198,21 +239,6 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
     override fun descriptionTimeOut(): String {
       return contextReference.get()!!
           .getString(R.string.screen_linking_site_description_timeout)
-    }
-  }
-
-  companion object {
-
-    private const val IK_DATA = "com.paybook.glass.linkingsite.data"
-
-    // Creational methods.
-    fun newIntent(
-      from: Context,
-      linkingSiteData: LinkingSiteData
-    ): Intent {
-      val i = Intent(from, LinkingSiteActivity::class.java)
-      i.putExtra(IK_DATA, linkingSiteData)
-      return i
     }
   }
 }
