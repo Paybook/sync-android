@@ -120,12 +120,15 @@ class TwoFaActivity : BaseActivity(), TwoFaContract.View {
         .show()
   }
 
-  override fun showLoadingIndicator() {
+  override fun showLoading() {
     loadingIndicator.visibility = View.VISIBLE
   }
 
-  override fun hideLoadingIndicator() {
+  override fun hideLoading() {
     loadingIndicator.visibility = View.INVISIBLE
   }
 
+  override fun showUnexpectedError(message: String) {
+    Snackbar.make(coverView, message, Snackbar.LENGTH_LONG).show()
+  }
 }

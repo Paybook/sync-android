@@ -5,6 +5,7 @@ import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
 import com.paybook.sync.entities.twofa.TwoFaCredential
+import com.paybook.sync.entities.twofa.TwoFaImage
 import io.reactivex.disposables.Disposable
 
 /**
@@ -17,9 +18,12 @@ interface TwoFaContract {
     fun showOrganization(organization: Organization)
     fun showSite(site: Site)
     fun showCredentials(siteCredentials: List<TwoFaCredential>)
+
+    fun showLoading()
+    fun hideLoading()
+
     fun showNetworkError()
-    fun showLoadingIndicator()
-    fun hideLoadingIndicator()
+    fun showUnexpectedError(message: String)
   }
 
   interface Presenter {
