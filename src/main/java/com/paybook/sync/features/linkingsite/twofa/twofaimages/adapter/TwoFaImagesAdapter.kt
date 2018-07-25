@@ -1,9 +1,9 @@
-package com.paybook.sync.features.twofa.twofaimages.adapter
+package com.paybook.sync.features.linkingsite.twofa.twofaimages.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.paybook.sync.features.twofa.twofaimages.CannotReadFileListener
+import com.paybook.sync.features.linkingsite.twofa.twofaimages.CannotReadFileListener
 import com.paybook.sync.entities.twofa.TwoFaImage
 import java.util.ArrayList
 

@@ -1,7 +1,7 @@
 package com.paybook.sync.features.linksite
 
-import com.paybook.core.BaseActivity
 import com.paybook.core.util.clearBackStack
+import com.paybook.sync.base.BaseActivity
 import com.paybook.sync.features.linkingsite.LinkingSiteActivity
 import com.paybook.sync.features.linkingsite.LinkingSiteData
 import java.lang.ref.WeakReference

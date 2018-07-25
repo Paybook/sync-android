@@ -1,4 +1,4 @@
-package com.paybook.sync.features.twofa.twofaimages
+package com.paybook.sync.features.linkingsite.twofa.twofaimages
 
 import android.content.Context
 import android.content.Intent
@@ -10,11 +10,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.evernote.android.state.State
-import com.paybook.core.BaseActivity
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
-import com.paybook.sync.features.twofa.twofaimages.adapter.ImageSelectedListener
-import com.paybook.sync.features.twofa.twofaimages.adapter.TwoFaImagesAdapter
+import com.paybook.sync.base.BaseActivity
+import com.paybook.sync.features.linkingsite.twofa.twofaimages.adapter.ImageSelectedListener
+import com.paybook.sync.features.linkingsite.twofa.twofaimages.adapter.TwoFaImagesAdapter
 import com.paybook.sync.useCases.VerifyTwoFaImagesUseCase
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.Organization

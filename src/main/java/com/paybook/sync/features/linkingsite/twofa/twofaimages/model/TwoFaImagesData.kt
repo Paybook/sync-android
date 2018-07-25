@@ -1,4 +1,4 @@
-package com.paybook.sync.features.twofa.twofaimages.model
+package com.paybook.sync.features.linkingsite.twofa.twofaimages.model
 
 import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site

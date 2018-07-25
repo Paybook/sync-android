@@ -1,4 +1,4 @@
-package com.paybook.sync.features.twofa.simpletwofa
+package com.paybook.sync.features.linkingsite.twofa.simpletwofa
 
 import com.paybook.core.exception.OnErrorNotImplementedException
 import com.paybook.sync.SyncModule
