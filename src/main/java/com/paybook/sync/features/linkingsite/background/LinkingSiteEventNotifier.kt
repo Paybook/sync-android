@@ -9,8 +9,7 @@ import android.support.v4.app.TaskStackBuilder
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
 import com.paybook.sync.features.linksite.LinkSiteActivity
-import com.paybook.sync.features.linkingsite.twofa.simpletwofa.TwoFaFragment
-import com.paybook.sync.features.linkingsite.twofa.twofaimages.TwoFaImagesActivity
+import com.paybook.sync.features.linkingsite.twofa.twofaimages.TwoFaImagesFragment
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.LinkingSiteEventType
 import com.paybook.sync.entities.LinkingSiteEventType.PROCESSING
@@ -91,7 +90,7 @@ class LinkingSiteEventNotifier(context: Context, private val event: LinkingSiteE
     return when (event.eventType) {
       PROCESSING -> throw IllegalStateException("No notification for processing")
       TWO_FA -> LinkingSiteActivity.twoFaIntent(contextWeakReference.get()!!, event)
-      TWO_FA_IMAGES -> TwoFaImagesActivity.newIntent(contextWeakReference.get()!!, event)
+      TWO_FA_IMAGES -> LinkingSiteActivity.twoFaIntent(contextWeakReference.get()!!, event)
       SUCCESS -> SyncModule.homeIntentFactory.create(contextWeakReference.get()!!)
       else -> LinkSiteActivity.newIntent(contextWeakReference.get()!!, event.organization, event.site)
     }

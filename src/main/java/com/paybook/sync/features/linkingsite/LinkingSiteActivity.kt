@@ -46,7 +46,7 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
       event: LinkingSiteEvent
     ): Intent {
       val i = Intent(from, LinkingSiteActivity::class.java)
-      i.putExtra(IK_DATA, event)
+      i.putExtra(IK_EVENT, event)
       return i
     }
   }

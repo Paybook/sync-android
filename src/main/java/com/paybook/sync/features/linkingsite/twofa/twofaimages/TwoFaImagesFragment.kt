@@ -1,32 +1,33 @@
 package com.paybook.sync.features.linkingsite.twofa.twofaimages
 
-import android.content.Context
-import android.content.Intent
+import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.evernote.android.state.State
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
-import com.paybook.sync.base.BaseActivity
-import com.paybook.sync.features.linkingsite.twofa.twofaimages.adapter.ImageSelectedListener
-import com.paybook.sync.features.linkingsite.twofa.twofaimages.adapter.TwoFaImagesAdapter
-import com.paybook.sync.useCases.VerifyTwoFaImagesUseCase
+import com.paybook.sync.base.BaseFragment
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
 import com.paybook.sync.entities.twofa.TwoFaImage
+import com.paybook.sync.features.linkingsite.twofa.twofaimages.adapter.ImageSelectedListener
+import com.paybook.sync.features.linkingsite.twofa.twofaimages.adapter.TwoFaImagesAdapter
+import com.paybook.sync.useCases.VerifyTwoFaImagesUseCase
 import io.reactivex.disposables.Disposable
 
 /**
  * Created by Gerardo Teruel on 11/13/17.
  */
 
-class TwoFaImagesActivity : BaseActivity(), TwoFaImagesContract.View {
+class TwoFaImagesFragment : BaseFragment(), TwoFaImagesContract.View {
   @State var event: LinkingSiteEvent? = null
 
   private lateinit var coverView: ImageView
@@ -43,36 +44,36 @@ class TwoFaImagesActivity : BaseActivity(), TwoFaImagesContract.View {
   companion object {
     const val IK_DATA = "com.paybook.sync.ui.twofa.twofaimages.data"
 
-    fun newIntent(
-      from: Context,
+    fun new(
       event: LinkingSiteEvent
-    ): Intent {
-      if (event.twoFaImages == null) {
-        throw IllegalStateException(
-            "Tried to open image selection when none is available " + event.toString()
-        )
-      }
-      val i = Intent(from, TwoFaImagesActivity::class.java)
-      i.putExtra(IK_DATA, event)
-      return i
+    ): TwoFaImagesFragment {
+      val fragment = TwoFaImagesFragment()
+      val args = Bundle()
+      args.putSerializable(IK_DATA, event)
+      fragment.arguments = args
+      return fragment
     }
   }
 
   // Lifecycle methods.
-  override fun setView() {
-    setContentView(R.layout.activity_two_fa)
-    coverView = findViewById(R.id.imgCover)
-    siteNameView = findViewById(R.id.txtSite)
-    credentialsView = findViewById(R.id.listCredentials)
-    nextButton = findViewById(R.id.btnAddSite)
-    loadingIndicator = findViewById(R.id.loadingIndicator)
+  override fun setView(
+    inflater: LayoutInflater,
+    container: ViewGroup?
+  ): View {
+    val root = inflater.inflate(R.layout.activity_two_fa, container, false)
+    coverView = root.findViewById(R.id.imgCover)
+    siteNameView = root.findViewById(R.id.txtSite)
+    credentialsView = root.findViewById(R.id.listCredentials)
+    nextButton = root.findViewById(R.id.btnAddSite)
+    loadingIndicator = root.findViewById(R.id.loadingIndicator)
+    return root
+  }
+
+  override fun getFieldsFromArguments(arguments: Bundle?) {
+    event = arguments!!.getSerializable(IK_DATA) as LinkingSiteEvent
   }
 
   override fun inject() {
-    if (event == null) {
-      event = intent.getSerializableExtra(IK_DATA) as LinkingSiteEvent
-    }
-
     nextButton.setOnClickListener { onSubmitImage() }
 
     adapter = TwoFaImagesAdapter(
@@ -87,10 +88,10 @@ class TwoFaImagesActivity : BaseActivity(), TwoFaImagesContract.View {
           }
         })
 
-    credentialsView.layoutManager = GridLayoutManager(this, 2)
+    credentialsView.layoutManager = GridLayoutManager(baseActivity, 2)
     credentialsView.adapter = adapter
 
-    val navigator = TwoFaImagesNavigator(this)
+    val navigator = TwoFaImagesNavigator(baseActivity)
     val useCase = VerifyTwoFaImagesUseCase(SyncModule.syncService)
     presenter = TwoFaImagesPresenter(this, navigator, useCase)
   }
