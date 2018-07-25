@@ -1,15 +1,15 @@
 package com.paybook.sync.features.linkingsite
 
 import android.content.Context
-import com.paybook.core.BaseActivity
 import com.paybook.core.util.clearBackStack
 import com.paybook.sync.SyncModule
+import com.paybook.sync.base.BaseActivity
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
 import com.paybook.sync.features.linksite.LinkSiteActivity
-import com.paybook.sync.features.twofa.simpletwofa.TwoFaActivity
-import com.paybook.sync.features.twofa.twofaimages.TwoFaImagesActivity
+import com.paybook.sync.features.linkingsite.twofa.simpletwofa.TwoFaActivity
+import com.paybook.sync.features.linkingsite.twofa.twofaimages.TwoFaImagesActivity
 import java.lang.ref.WeakReference
 
 /**

@@ -13,9 +13,9 @@ import android.widget.TextView
 import com.paybook.sync.entities.twofa.TwoFaCredential
 import com.paybook.sync.features.linksite.SiteCredentialsAdapter
 import com.evernote.android.state.State
-import com.paybook.core.BaseActivity
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
+import com.paybook.sync.base.BaseActivity
 import com.paybook.sync.useCases.VerifyTwoFaUseCase
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.Organization

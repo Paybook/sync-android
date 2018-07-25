@@ -1,7 +1,7 @@
 package com.paybook.sync.features.linkingsite.twofa.twofaimages
 
-import com.paybook.core.BaseActivity
 import com.paybook.core.util.clearBackStack
+import com.paybook.sync.base.BaseActivity
 import com.paybook.sync.features.linkingsite.LinkingSiteActivity
 import com.paybook.sync.features.linkingsite.LinkingSiteData
 import com.paybook.sync.entities.LinkingSiteEvent

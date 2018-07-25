@@ -3,8 +3,8 @@ package com.paybook.sync.features.resync
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import com.paybook.core.BaseService
 import com.paybook.sync.SyncModule
+import com.paybook.sync.base.BaseService
 import com.paybook.sync.data.OrganizationsRepository
 import com.paybook.sync.data.SitesRepository
 import com.paybook.sync.entities.AddingAccount

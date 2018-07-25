@@ -12,9 +12,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.evernote.android.state.State
 import com.joanzapata.iconify.widget.IconTextView
-import com.paybook.core.BaseActivity
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
+import com.paybook.sync.base.BaseActivity
 import com.paybook.sync.features.linkingsite.background.LinkingSiteBroadcastService
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.LinkingSiteEventType
@@ -28,17 +28,17 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
 
   @State var data: LinkingSiteData? = null
 
-  lateinit var coverView: ImageView
+  private lateinit var coverView: ImageView
 
-  lateinit var loadingView: View
-  lateinit var iconBackground: ImageView
-  lateinit var iconView: IconTextView
+  private lateinit var loadingView: View
+  private lateinit var iconBackground: ImageView
+  private lateinit var iconView: IconTextView
 
-  lateinit var titleView: TextView
-  lateinit var descriptionView: TextView
+  private lateinit var titleView: TextView
+  private lateinit var descriptionView: TextView
 
-  lateinit var reAttemptView: Button
-  lateinit var goToHomeView: Button
+  private lateinit var reAttemptView: Button
+  private lateinit var goToHomeView: Button
 
   lateinit var presenter: LinkingSiteContract.Presenter
 

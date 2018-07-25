@@ -9,8 +9,8 @@ import android.support.v4.app.TaskStackBuilder
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
 import com.paybook.sync.features.linksite.LinkSiteActivity
-import com.paybook.sync.features.twofa.simpletwofa.TwoFaActivity
-import com.paybook.sync.features.twofa.twofaimages.TwoFaImagesActivity
+import com.paybook.sync.features.linkingsite.twofa.simpletwofa.TwoFaActivity
+import com.paybook.sync.features.linkingsite.twofa.twofaimages.TwoFaImagesActivity
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.LinkingSiteEventType
 import com.paybook.sync.entities.LinkingSiteEventType.PROCESSING
