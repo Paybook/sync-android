@@ -1,4 +1,4 @@
-package com.paybook.sync.features.twofa.twofaimages
+package com.paybook.sync.features.linkingsite.twofa.twofaimages
 
 /**
  * Created by Gerardo Teruel on 5/29/18.

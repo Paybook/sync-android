@@ -1,4 +1,4 @@
-package com.paybook.sync.features.twofa.twofaimages
+package com.paybook.sync.features.linkingsite.twofa.twofaimages
 
 import com.paybook.core.exception.OnErrorNotImplementedException
 import com.paybook.sync.useCases.VerifyTwoFaImagesUseCase

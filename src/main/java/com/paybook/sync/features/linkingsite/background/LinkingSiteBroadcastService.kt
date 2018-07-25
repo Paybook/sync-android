@@ -72,7 +72,7 @@ class LinkingSiteBroadcastService : BaseService() {
         .doOnNext {
           Log.d("WEB_SOCKET", it.payload)
         }
-        .map<Any> { e -> gson.fromJson(e.payload, AddAccountWebSocketResponse::class.java) }
+        .map { e -> gson.fromJson(e.payload, AddAccountWebSocketResponse::class.java) }
         // We delay so that there's a window of time for the user to go back to the view before
         // a response is processed.
         .concatMap { e ->
@@ -125,14 +125,13 @@ class LinkingSiteBroadcastService : BaseService() {
     fun convert(twoFaImages: List<AddAccountWebSocketResponse.TwoFaImageResponse>): List<TwoFaImage> {
       val values = ArrayList<TwoFaImage>()
       for (twoFaImage in twoFaImages) {
-        val fileWithValue: TwoFaImage
-        if (!twoFaImage.isUrl) {
+        val fileWithValue = if (!twoFaImage.isUrl) {
           store(twoFaImage)
           val uri = Uri.fromFile(File(filename(twoFaImage)))
               .toString()
-          fileWithValue = TwoFaImage(uri, twoFaImage.value)
+          TwoFaImage(uri, twoFaImage.value)
         } else {
-          fileWithValue = TwoFaImage(twoFaImage.imgUrl!!, twoFaImage.value)
+          TwoFaImage(twoFaImage.imgUrl!!, twoFaImage.value)
         }
         values.add(fileWithValue)
       }

@@ -1,4 +1,4 @@
-package com.paybook.sync.features.twofa.twofaimages
+package com.paybook.sync.features.linkingsite.twofa.twofaimages
 
 import com.paybook.core.BaseActivity
 import com.paybook.core.util.clearBackStack

@@ -1,4 +1,4 @@
-package com.paybook.sync.features.twofa.twofaimages
+package com.paybook.sync.features.linkingsite.twofa.twofaimages
 
 import android.content.Context
 import android.content.Intent

@@ -1,4 +1,4 @@
-package com.paybook.sync.features.twofa.twofaimages.adapter
+package com.paybook.sync.features.linkingsite.twofa.twofaimages.adapter
 
 import com.paybook.sync.entities.twofa.TwoFaImage
 
