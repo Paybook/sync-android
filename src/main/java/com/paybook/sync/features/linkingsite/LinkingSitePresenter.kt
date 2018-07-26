@@ -49,6 +49,8 @@ class LinkingSitePresenter(
   }
 
   override fun subscribe(jobId: String): Disposable? {
+    view.registerForLinkingSiteEvents()
+    navigator.openLoading()
     return null
 //    val event = repository.lastBackgroundEventType(jobId)
 //    if (event == null) {

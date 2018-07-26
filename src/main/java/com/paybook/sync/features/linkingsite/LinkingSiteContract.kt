@@ -30,6 +30,7 @@ interface LinkingSiteContract {
   }
 
   interface Navigator {
+    fun openLoading()
     fun openSuccess()
     fun openError(reason: String, organization: Organization, site:Site)
     fun openHome()

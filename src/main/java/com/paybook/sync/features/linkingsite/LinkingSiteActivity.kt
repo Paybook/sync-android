@@ -5,12 +5,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.NotificationManagerCompat
-import android.view.View
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import com.evernote.android.state.State
-import com.joanzapata.iconify.widget.IconTextView
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
 import com.paybook.sync.base.BaseActivity
@@ -53,16 +49,6 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
 
   private lateinit var coverView: ImageView
 
-  private lateinit var loadingView: View
-  private lateinit var iconBackground: ImageView
-  private lateinit var iconView: IconTextView
-
-  private lateinit var titleView: TextView
-  private lateinit var descriptionView: TextView
-
-  private lateinit var reAttemptView: Button
-  private lateinit var goToHomeView: Button
-
   lateinit var presenter: LinkingSiteContract.Presenter
 
   private val broadcastReceiver = object : BroadcastReceiver() {
@@ -79,17 +65,7 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
   // Lifecycle methods.
   override fun setView() {
     setContentView(R.layout.activity_linking_site)
-
     coverView = findViewById(R.id.imgCover)
-
-    loadingView = findViewById(R.id.loadingIndicator)
-    iconBackground = findViewById(R.id.circle)
-    iconView = findViewById(R.id.icon)
-
-    titleView = findViewById(R.id.txtTitle)
-    descriptionView = findViewById(R.id.txtDescription)
-
-    goToHomeView = findViewById(R.id.btnGoToHome)
   }
 
   override fun inject() {
@@ -105,13 +81,6 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
       presenter.onEvent(event)
     } else {
       throw IllegalStateException("Unexpected launch without LinkingSiteData provided")
-    }
-
-    goToHomeView.setOnClickListener { presenter.onGoToHome() }
-    reAttemptView.setOnClickListener {
-      presenter.onReattemptLink(
-          data!!.site, data!!.organization
-      )
     }
 
     val navigator = LinkingSiteNavigator(this, applicationContext)

@@ -28,45 +28,6 @@
     </android.support.design.widget.CollapsingToolbarLayout>
   </android.support.design.widget.AppBarLayout>
 
-
-  <ProgressBar
-      android:id="@+id/loadingIndicator"
-      android:layout_width="115dp"
-      android:layout_height="115dp"
-      android:layout_marginTop="@dimen/margin_nl"
-      app:layout_constraintLeft_toLeftOf="parent"
-      app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-      />
-
-  <de.hdodenhof.circleimageview.CircleImageView
-      android:id="@+id/circle"
-      android:layout_width="64dp"
-      android:layout_height="64dp"
-      android:src="@color/green_success"
-      app:layout_constraintBottom_toBottomOf="@id/loadingIndicator"
-      app:layout_constraintLeft_toLeftOf="@id/loadingIndicator"
-      app:layout_constraintRight_toRightOf="@id/loadingIndicator"
-      app:layout_constraintTop_toTopOf="@id/loadingIndicator"
-      />
-
-  <com.joanzapata.iconify.widget.IconTextView
-      android:id="@+id/icon"
-      android:layout_width="64dp"
-      android:layout_height="64dp"
-      android:gravity="center"
-      android:maxLines="1"
-      android:text="{fa-university}"
-      android:textAlignment="center"
-      android:textColor="@color/md_white_1000"
-      android:textSize="@dimen/fs_headline"
-      app:layout_constraintBottom_toBottomOf="@id/circle"
-      app:layout_constraintLeft_toLeftOf="@id/circle"
-      app:layout_constraintRight_toRightOf="@id/circle"
-      app:layout_constraintTop_toTopOf="@id/circle"
-      tools:ignore="HardcodedText"
-      />
-
   <FrameLayout
       android:id="@+id/container"
       android:layout_width="0dp"
@@ -75,6 +36,13 @@
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toBottomOf="@id/appBarLayout"
       app:layout_constraintBottom_toBottomOf="parent"
+      />
+
+  <android.support.constraint.Group
+      android:id="@+id/group"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:constraint_referenced_ids="icon,circle,loadingIndicator"
       />
 
 

@@ -8,14 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import com.evernote.android.state.State
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
 import com.paybook.sync.base.BaseFragment
 import com.paybook.sync.entities.LinkingSiteEvent
-import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
 import com.paybook.sync.entities.twofa.TwoFaImage
 import com.paybook.sync.features.linkingsite.twofa.twofaimages.adapter.ImageSelectedListener
@@ -30,7 +28,6 @@ import io.reactivex.disposables.Disposable
 class TwoFaImagesFragment : BaseFragment(), TwoFaImagesContract.View {
   @State var event: LinkingSiteEvent? = null
 
-  private lateinit var coverView: ImageView
   private lateinit var siteNameView: TextView
   private lateinit var credentialsView: RecyclerView
   private lateinit var nextButton: Button
@@ -61,7 +58,6 @@ class TwoFaImagesFragment : BaseFragment(), TwoFaImagesContract.View {
     container: ViewGroup?
   ): View {
     val root = inflater.inflate(R.layout.activity_two_fa, container, false)
-    coverView = root.findViewById(R.id.imgCover)
     siteNameView = root.findViewById(R.id.txtSite)
     credentialsView = root.findViewById(R.id.listCredentials)
     nextButton = root.findViewById(R.id.btnAddSite)
@@ -119,15 +115,8 @@ class TwoFaImagesFragment : BaseFragment(), TwoFaImagesContract.View {
   // View methods
   override fun show(event: LinkingSiteEvent) {
     this.event = event
-    showOrganization(event.organization)
     showSite(event.site)
     showTwoFaImages(event.twoFaImages!!)
-  }
-
-  private fun showOrganization(organization: Organization) {
-    SyncModule.imageUrlLoaderFactory
-        .create(organization.coverImageUrl)
-        .load(coverView)
   }
 
   private fun showSite(site: Site) {
@@ -139,12 +128,12 @@ class TwoFaImagesFragment : BaseFragment(), TwoFaImagesContract.View {
   }
 
   override fun showNetworkError() {
-    Snackbar.make(coverView, R.string.msg_network_error, Snackbar.LENGTH_SHORT)
+    Snackbar.make(credentialsView, R.string.msg_network_error, Snackbar.LENGTH_SHORT)
         .show()
   }
 
   override fun showUnexpectedError() {
-    Snackbar.make(coverView, R.string.msg_unexpected_error, Snackbar.LENGTH_SHORT)
+    Snackbar.make(credentialsView, R.string.msg_unexpected_error, Snackbar.LENGTH_SHORT)
         .show()
   }
 

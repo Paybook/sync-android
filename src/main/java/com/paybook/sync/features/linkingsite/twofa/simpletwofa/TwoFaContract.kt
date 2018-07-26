@@ -15,7 +15,6 @@ import io.reactivex.disposables.Disposable
 interface TwoFaContract {
 
   interface View {
-    fun showOrganization(organization: Organization)
     fun showSite(site: Site)
     fun showCredentials(siteCredentials: List<TwoFaCredential>)
 

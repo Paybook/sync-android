@@ -23,7 +23,7 @@
   <string name="screen_linking_site_description_server_error">Our servers are incredibly busy, please try again later</string>
   <string name="msg_network_error">Check your internet connection and try again.</string>
   <string name="msg_unexpected_error">An unexpected server error occurred, please try again later.</string>
-  <string name="msg_please_select_image"/>
+  <string name="msg_please_select_image">Please select an image to continue.</string>
   <string name="msg_follow_institution_instructions"/>
   <string name="linkingAccount_title">Connecting to your institution.</string>
   <string name="linkingAccount_description">Please wait a moment.</string>

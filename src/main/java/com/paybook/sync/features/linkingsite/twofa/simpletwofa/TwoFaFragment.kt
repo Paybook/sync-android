@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import com.paybook.sync.entities.twofa.TwoFaCredential
 import com.paybook.sync.features.linksite.SiteCredentialsAdapter
@@ -18,7 +17,6 @@ import com.paybook.sync.SyncModule
 import com.paybook.sync.base.BaseFragment
 import com.paybook.sync.useCases.VerifyTwoFaUseCase
 import com.paybook.sync.entities.LinkingSiteEvent
-import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
 import io.reactivex.disposables.Disposable
 
@@ -30,7 +28,6 @@ class TwoFaFragment : BaseFragment(), TwoFaContract.View {
 
   @State lateinit var event: LinkingSiteEvent
 
-  private lateinit var coverView: ImageView
   private lateinit var siteNameView: TextView
   private lateinit var credentialsView: RecyclerView
   private lateinit var nextButton: Button
@@ -62,7 +59,6 @@ class TwoFaFragment : BaseFragment(), TwoFaContract.View {
     container: ViewGroup?
   ): View {
     val root = inflater.inflate(R.layout.activity_two_fa, container, false)
-    coverView = root.findViewById(R.id.imgCover)
     siteNameView = root.findViewById(R.id.txtSite)
     credentialsView = root.findViewById(R.id.listCredentials)
     nextButton = root.findViewById(R.id.btnAddSite)
@@ -94,15 +90,8 @@ class TwoFaFragment : BaseFragment(), TwoFaContract.View {
   }
 
   override fun onViewCreated() {
-    showOrganization(event.organization)
     showSite(event.site)
     showCredentials(event.twoFaCredentials!!)
-  }
-
-  override fun showOrganization(organization: Organization) {
-    SyncModule.imageUrlLoaderFactory
-        .create(organization.coverImageUrl)
-        .load(coverView)
   }
 
   override fun showSite(site: Site) {
@@ -114,7 +103,7 @@ class TwoFaFragment : BaseFragment(), TwoFaContract.View {
   }
 
   override fun showNetworkError() {
-    Snackbar.make(coverView, R.string.msg_network_error, Snackbar.LENGTH_SHORT)
+    Snackbar.make(credentialsView, R.string.msg_network_error, Snackbar.LENGTH_SHORT)
         .show()
   }
 
@@ -127,6 +116,6 @@ class TwoFaFragment : BaseFragment(), TwoFaContract.View {
   }
 
   override fun showUnexpectedError(message: String) {
-    Snackbar.make(coverView, message, Snackbar.LENGTH_LONG).show()
+    Snackbar.make(credentialsView, message, Snackbar.LENGTH_LONG).show()
   }
 }
