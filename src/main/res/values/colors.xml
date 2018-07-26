@@ -19,6 +19,9 @@
   <color name="textHintDarkBg">#7F7F7F</color>
   <color name="dividerDarkBg">@color/md_grey_300</color>
 
+  <color name="raven">#FF666E7B</color>
+  <color name="raven_disabled">#66666E7B</color>
+
   <color name="md_grey_50">#FAFAFA</color>
   <color name="md_grey_100">#F5F5F5</color>
   <color name="md_grey_200">#EEEEEE</color>

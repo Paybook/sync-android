@@ -1,6 +1,5 @@
 package com.paybook.sync.features.linkingsite
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -27,7 +26,6 @@ import java.lang.ref.WeakReference
 class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
 
   companion object {
-
     private const val IK_DATA = "com.paybook.glass.linkingsite.data"
     private const val IK_EVENT = "com.paybook.glass.linkingsite.event"
 
@@ -92,7 +90,6 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
     descriptionView = findViewById(R.id.txtDescription)
 
     goToHomeView = findViewById(R.id.btnGoToHome)
-    reAttemptView = findViewById(R.id.btnResync)
   }
 
   override fun inject() {
@@ -105,7 +102,7 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
           site = event.site,
           jobId = event.jobId
       )
-      presenter.onEvent(event.eventType)
+      presenter.onEvent(event)
     } else {
       throw IllegalStateException("Unexpected launch without LinkingSiteData provided")
     }
@@ -125,7 +122,7 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
 
   override fun onNewIntent(intent: Intent) {
     val event = intent.getSerializableExtra(IK_EVENT) as LinkingSiteEvent
-    presenter.onEvent(event.eventType)
+    presenter.onEvent(event)
     super.onNewIntent(intent)
   }
 
@@ -156,7 +153,7 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
     when {
       type === LinkingSiteEventType.TWO_FA -> presenter.onTwoFa(event)
       type === LinkingSiteEventType.TWO_FA_IMAGES -> presenter.onTwoFaImages(event)
-      else -> presenter.onEvent(type)
+      else -> presenter.onEvent(event)
     }
   }
 
@@ -165,38 +162,6 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
     val intentFilter = LinkingSiteBroadcastService.intentFilter()
     val permission = LinkingSiteBroadcastService.permission()
     registerReceiver(broadcastReceiver, intentFilter, permission, null)
-  }
-
-  @SuppressLint("SetTextI18n") override fun showAccountLinked() {
-    loadingView.visibility = View.INVISIBLE
-  }
-
-  @SuppressLint("SetTextI18n")
-  override fun showError(
-    reason: String,
-    description: String
-  ) {
-    loadingView.visibility = View.INVISIBLE
-
-    iconView.text = "{fa-exclamation-triangle}"
-    iconBackground.setImageResource(R.color.red_warning)
-
-    reAttemptView.visibility = View.VISIBLE
-
-    titleView.text = reason
-    descriptionView.text = description
-  }
-
-  @SuppressLint("SetTextI18n") override fun showPaybookError() {
-    loadingView.visibility = View.INVISIBLE
-
-    iconView.text = "{fa-exclamation-triangle}"
-    iconBackground.setImageResource(R.color.red_warning)
-
-    goToHomeView.visibility = View.VISIBLE
-
-    titleView.setText(R.string.screen_linking_site_title_server_error)
-    descriptionView.setText(R.string.screen_linking_site_description_server_error)
   }
 
   override fun hideNotification(jobId: String) {

@@ -30,4 +30,5 @@
   <string name="linkingAccount_action_goToHome">Go to home</string>
   <string name="linkingAccount_action_tryAgain">Try again</string>
   <string name="success_cd_successLinking">Success linking account</string>
+  <string name="success_cd_errorLinking">An error occurred while linking your account.</string>
 </resources>

@@ -14,14 +14,11 @@ interface LinkingSiteContract {
 
   interface View {
     fun registerForLinkingSiteEvents()
-    fun showAccountLinked()
-    fun showError(reason: String, description: String)
-    fun showPaybookError()
     fun hideNotification(jobId: String)
   }
 
   interface Presenter {
-    fun onEvent(event: LinkingSiteEventType)
+    fun onEvent(event: LinkingSiteEvent)
     fun onTwoFa(event: LinkingSiteEvent)
     fun onTwoFaImages(event: LinkingSiteEvent)
 
@@ -34,6 +31,7 @@ interface LinkingSiteContract {
 
   interface Navigator {
     fun openSuccess()
+    fun openError(reason: String, organization: Organization, site:Site)
     fun openHome()
     fun openLinkInstitution(organization: Organization, site: Site)
     fun openTwoFaScreen(event: LinkingSiteEvent)

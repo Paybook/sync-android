@@ -36,8 +36,10 @@ class SuccessFragment : BaseFragment() {
   }
 
   override fun inject() {
-    val i = SyncModule.homeIntentFactory.create(baseActivity)
-    i.clearBackStack()
-    startActivity(i)
+    btnGoToHome.setOnClickListener {
+      val i = SyncModule.homeIntentFactory.create(baseActivity)
+      i.clearBackStack()
+      startActivity(i)
+    }
   }
 }
