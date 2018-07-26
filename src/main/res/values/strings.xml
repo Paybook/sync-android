@@ -29,4 +29,5 @@
   <string name="linkingAccount_description">Please wait a moment.</string>
   <string name="linkingAccount_action_goToHome">Go to home</string>
   <string name="linkingAccount_action_tryAgain">Try again</string>
+  <string name="success_cd_successLinking">Success linking account</string>
 </resources>

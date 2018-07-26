@@ -46,4 +46,6 @@
   <dimen name="avatar_width">64dp</dimen>
   <dimen name="avatar_height">64dp</dimen>
   <!--End fonts-->
+
+  <dimen name="circle_size">64dp</dimen>
 </resources>

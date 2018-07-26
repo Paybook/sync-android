@@ -169,14 +169,6 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
 
   @SuppressLint("SetTextI18n") override fun showAccountLinked() {
     loadingView.visibility = View.INVISIBLE
-
-    iconView.text = "{fa-check}"
-    iconBackground.setImageResource(R.color.green_success)
-
-    goToHomeView.visibility = View.VISIBLE
-
-    titleView.setText(R.string.screen_linking_site_title_linked)
-    descriptionView.setText(R.string.screen_linking_site_description_linked)
   }
 
   @SuppressLint("SetTextI18n")

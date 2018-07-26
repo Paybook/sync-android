@@ -33,6 +33,7 @@ interface LinkingSiteContract {
   }
 
   interface Navigator {
+    fun openSuccess()
     fun openHome()
     fun openLinkInstitution(organization: Organization, site: Site)
     fun openTwoFaScreen(event: LinkingSiteEvent)

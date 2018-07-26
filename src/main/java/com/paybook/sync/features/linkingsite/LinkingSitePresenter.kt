@@ -37,7 +37,7 @@ class LinkingSitePresenter(
     }
     with(messages) {
       when (event) {
-        SUCCESS -> view.showAccountLinked()
+        SUCCESS -> navigator.openSuccess()
         INCORRECT_CREDENTIALS -> view.showError(titleError(), descriptionIncorrectCredentials())
         ACCOUNT_LOCKED -> view.showError(titleError(), descriptionAccountLocked())
         ALREADY_LOGGED_IN -> view.showError(titleError(), descriptionAlreadyLoggedIn())

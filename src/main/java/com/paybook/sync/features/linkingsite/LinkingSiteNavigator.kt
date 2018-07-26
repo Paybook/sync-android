@@ -8,6 +8,7 @@ import com.paybook.sync.base.BaseActivity
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
+import com.paybook.sync.features.linkingsite.success.SuccessFragment
 import com.paybook.sync.features.linksite.LinkSiteActivity
 import com.paybook.sync.features.linkingsite.twofa.simpletwofa.TwoFaFragment
 import com.paybook.sync.features.linkingsite.twofa.twofaimages.TwoFaImagesFragment
@@ -36,6 +37,15 @@ class LinkingSiteNavigator(
 
   override fun openTwoFaImagesScreen(event: LinkingSiteEvent) {
     val fragment = TwoFaImagesFragment.new(event)
+    activityReference.get()!!
+        .supportFragmentManager
+        .beginTransaction()
+        .replace(R.id.container, fragment)
+        .commit()
+  }
+
+  override fun openSuccess() {
+    val fragment = SuccessFragment.new()
     activityReference.get()!!
         .supportFragmentManager
         .beginTransaction()

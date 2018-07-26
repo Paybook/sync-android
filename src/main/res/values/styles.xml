@@ -99,4 +99,19 @@
     <item name="android:textColor">@color/md_white_1000</item>
     <item name="android:fontFamily">@font/open_sans</item>
   </style>
+
+  <style name="TextTitle">
+    <item name="android:gravity">center</item>
+    <item name="android:fontFamily">@font/open_sans_semibold"</item>
+    <item name="android:textColor">@color/textPrimaryLightBg</item>
+    <item name="android:textSize">@dimen/fs_title_regular</item>
+    <item name="android:textStyle">bold</item>
+    <!--<item name="android:textAlignment">center</item>-->
+  </style>
+
+  <style name="TextDescription">
+    <item name="android:gravity">center</item>
+    <item name="android:textColor">@color/textSecondaryLightBg</item>
+    <item name="android:fontFamily">@font/open_sans_regular</item>
+  </style>
 </resources>
