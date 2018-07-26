@@ -83,7 +83,7 @@ class AddAccountWebSocketResponse {
     } else if (isProcessing) {
       LinkingSiteEventType.PROCESSING
     } else {
-      throw IllegalStateException("Cannot map to event " + toString())
+      throw IllegalStateException("Cannot linkingSite to event " + toString())
     }
   }
 

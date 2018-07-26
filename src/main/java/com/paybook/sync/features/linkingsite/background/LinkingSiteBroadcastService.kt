@@ -5,11 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
-import android.util.Log
 import com.google.gson.Gson
 import com.paybook.core.BaseService
 import com.paybook.core.exception.OnErrorNotImplementedException
 import com.paybook.sync.AddAccountRxWebSocket
+import com.paybook.sync.AddAccountRxWebSocket.SocketEvent
+import com.paybook.sync.AddAccountRxWebSocket.SocketEventType.END
 import com.paybook.sync.AddAccountWebSocketResponse
 import com.paybook.sync.SyncModule
 import com.paybook.sync.entities.LinkingSiteEvent
@@ -25,6 +26,7 @@ import java.io.File
 import java.io.IOException
 import java.io.PrintWriter
 import java.lang.ref.WeakReference
+import java.net.SocketTimeoutException
 import java.util.ArrayList
 import java.util.concurrent.TimeUnit
 
@@ -63,15 +65,20 @@ class LinkingSiteBroadcastService : BaseService() {
     val imageConverter = TwoFaImageConverter(jobId, this)
 
     val d = AddAccountRxWebSocket.observable(client, webSocket)
+        .onErrorReturn {
+          if (it is SocketTimeoutException) {
+            stopSelf(startId)
+            SocketEvent(END, "")
+          } else {
+            throw IllegalStateException("Unexpected socket error", it)
+          }
+        }
         .observeOn(schedulerProvider.io())
         .doOnTerminate {
           imageConverter.clear()
           stopSelf(startId)
         }
         .filter { e -> e.type === AddAccountRxWebSocket.SocketEventType.MESSAGE }
-        .doOnNext {
-          Log.d("WEB_SOCKET", it.payload)
-        }
         .map { e -> gson.fromJson(e.payload, AddAccountWebSocketResponse::class.java) }
         // We delay so that there's a window of time for the user to go back to the view before
         // a response is processed.
@@ -79,8 +86,8 @@ class LinkingSiteBroadcastService : BaseService() {
           Observable.just(e)
               .delay(500, TimeUnit.MILLISECONDS)
         }
-        .map<LinkingSiteEvent> { r ->
-          map(
+        .map { r ->
+          linkingSite(
               organization, site, jobId, r as AddAccountWebSocketResponse, imageConverter
           )
         }
@@ -94,7 +101,7 @@ class LinkingSiteBroadcastService : BaseService() {
     return Service.START_REDELIVER_INTENT
   }
 
-  fun map(
+  fun linkingSite(
     organization: Organization,
     site: Site,
     jobId: String,

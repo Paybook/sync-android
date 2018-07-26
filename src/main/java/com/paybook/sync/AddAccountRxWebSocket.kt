@@ -17,7 +17,8 @@ object AddAccountRxWebSocket {
   /** The types of messages emitted by the websocket.  */
   enum class SocketEventType {
     CONNECTED,
-    MESSAGE
+    MESSAGE,
+    END
   }
 
   /** The type and payload of a websocket event  */
