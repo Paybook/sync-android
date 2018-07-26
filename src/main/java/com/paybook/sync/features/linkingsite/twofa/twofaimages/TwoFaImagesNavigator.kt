@@ -1,10 +1,9 @@
 package com.paybook.sync.features.linkingsite.twofa.twofaimages
 
-import com.paybook.core.util.clearBackStack
+import com.paybook.sync.R
 import com.paybook.sync.base.BaseActivity
-import com.paybook.sync.features.linkingsite.LinkingSiteActivity
-import com.paybook.sync.features.linkingsite.LinkingSiteData
 import com.paybook.sync.entities.LinkingSiteEvent
+import com.paybook.sync.features.linkingsite.loading.LoadingFragment
 import java.lang.ref.WeakReference
 
 /**
@@ -12,13 +11,14 @@ import java.lang.ref.WeakReference
  */
 
 class TwoFaImagesNavigator(baseActivity: BaseActivity) : TwoFaImagesContract.Navigator {
-  private val activityReference: WeakReference<BaseActivity> = WeakReference(baseActivity)
+  private val ref: WeakReference<BaseActivity> = WeakReference(baseActivity)
 
   override fun openLinkingSite(event: LinkingSiteEvent) {
-    val data = LinkingSiteData(event.organization, event.site, event.jobId)
-    val i = LinkingSiteActivity.newIntent(activityReference.get()!!, data)
-    i.clearBackStack()
-    activityReference.get()!!
-        .startActivity(i)
+    val fragment = LoadingFragment.new()
+    ref.get()!!
+        .supportFragmentManager
+        .beginTransaction()
+        .replace(R.id.container, fragment)
+        .commit()
   }
 }
