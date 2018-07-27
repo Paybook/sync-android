@@ -147,7 +147,7 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
     }
 
     override fun descriptionVisitWebsite(): String {
-      contextReference.get()!!
+      return contextReference.get()!!
           .getString(R.string.screen_linking_site_description_visit_website)
     }
 
