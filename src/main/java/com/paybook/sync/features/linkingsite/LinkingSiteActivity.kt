@@ -146,6 +146,11 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
           .getString(R.string.screen_linking_site_title_error)
     }
 
+    override fun descriptionVisitWebsite(): String {
+      contextReference.get()!!
+          .getString(R.string.screen_linking_site_description_visit_website)
+    }
+
     override fun descriptionAccountLocked(): String {
       return contextReference.get()!!
           .getString(R.string.screen_linking_site_description_account_locked)

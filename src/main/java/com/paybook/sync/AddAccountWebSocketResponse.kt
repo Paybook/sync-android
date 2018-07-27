@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.paybook.sync.entities.LinkingSiteEventType
 import com.paybook.sync.entities.LinkingSiteEventType.ACCOUNT_LOCKED
 import com.paybook.sync.entities.LinkingSiteEventType.ALREADY_LOGGED_IN
+import com.paybook.sync.entities.LinkingSiteEventType.CHECK_WEBSITE
 import com.paybook.sync.entities.LinkingSiteEventType.INCORRECT_CREDENTIALS
 import com.paybook.sync.entities.LinkingSiteEventType.PROCESSING
 import com.paybook.sync.entities.LinkingSiteEventType.SERVER_ERROR
@@ -34,7 +35,10 @@ class AddAccountWebSocketResponse(
     get() = code == 301 || code in 401..403
 
   val isAccountLocked: Boolean
-    get() = code == 405 || code == 408
+    get() = code == 405
+
+  val checkWebsite: Boolean
+    get() = code == 408
 
   val isUserLoggedIn: Boolean
     get() = code == 406
@@ -84,6 +88,7 @@ class AddAccountWebSocketResponse(
       isImageTwoFaNeeded -> TWO_FA_IMAGES
       isServerError -> SERVER_ERROR
       isProcessing -> PROCESSING
+      checkWebsite -> CHECK_WEBSITE
       else -> throw IllegalStateException("Cannot linkingSite to event " + toString())
     }
   }

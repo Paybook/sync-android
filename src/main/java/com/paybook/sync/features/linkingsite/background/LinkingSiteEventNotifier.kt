@@ -62,6 +62,7 @@ class LinkingSiteEventNotifier(context: Context, private val event: LinkingSiteE
         LinkingSiteEventType.TWO_FA -> getString(R.string.notification_title_progress_link_account)
         LinkingSiteEventType.TWO_FA_IMAGES -> getString(R.string.notification_title_progress_link_account)
         LinkingSiteEventType.SERVER_ERROR -> getString(R.string.notification_title_error_link_account)
+        LinkingSiteEventType.CHECK_WEBSITE -> getString(R.string.notification_title_error_link_account)
       }.format(event.site.name)
     }
   }
@@ -78,6 +79,7 @@ class LinkingSiteEventNotifier(context: Context, private val event: LinkingSiteE
         LinkingSiteEventType.TWO_FA -> getString(R.string.notification_message_more_info)
         LinkingSiteEventType.TWO_FA_IMAGES -> getString(R.string.notification_message_more_info)
         LinkingSiteEventType.SERVER_ERROR -> getString(R.string.notification_message_server_busy)
+        LinkingSiteEventType.CHECK_WEBSITE -> getString(R.string.notification_message_check_website)
       }
     }
   }

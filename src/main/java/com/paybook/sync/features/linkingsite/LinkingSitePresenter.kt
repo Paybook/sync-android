@@ -1,6 +1,7 @@
 package com.paybook.sync.features.linkingsite
 
 import com.paybook.sync.entities.LinkingSiteEvent
+import com.paybook.sync.entities.LinkingSiteEventType
 import com.paybook.sync.entities.LinkingSiteEventType.ACCOUNT_LOCKED
 import com.paybook.sync.entities.LinkingSiteEventType.ALREADY_LOGGED_IN
 import com.paybook.sync.entities.LinkingSiteEventType.INCORRECT_CREDENTIALS
@@ -43,7 +44,9 @@ class LinkingSitePresenter(
         SERVER_ERROR ->
           navigator.openError("", event.organization, event.site)
         PROCESSING -> Unit
-        else -> throw IllegalStateException("Unexpected linking site event found $event")
+        LinkingSiteEventType.CHECK_WEBSITE -> navigator.openError(descriptionVisitWebsite(), event.organization, event.site)
+        LinkingSiteEventType.TWO_FA -> throw IllegalStateException("Handle two fa in appropiate method")
+        LinkingSiteEventType.TWO_FA_IMAGES -> throw IllegalStateException("Handle two fa in appropiate method")
       }
     }
   }

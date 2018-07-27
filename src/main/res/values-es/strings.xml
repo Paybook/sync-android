@@ -30,4 +30,8 @@
   <string name="linkingAccount_description">Por favor espera un momento.</string>
   <string name="linkingAccount_action_goToHome">Continuar</string>
   <string name="linkingAccount_action_tryAgain">Inténtalo de nuevo</string>
+
+
+  <string name="notification_message_check_website">Visita la página web de tu institución y verifica que este funcionando correctamente.</string>
+  <string name="screen_linking_site_description_visit_website">Visita la página web de tu institución y verifica que este funcionando correctamente.</string>
 </resources>

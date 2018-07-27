@@ -43,6 +43,7 @@ interface LinkingSiteContract {
     fun titleError(): String
     fun descriptionAccountLocked(): String
     fun descriptionAlreadyLoggedIn(): String
+    fun descriptionVisitWebsite(): String
     fun descriptionIncorrectCredentials(): String
     fun descriptionTimeOut(): String
   }

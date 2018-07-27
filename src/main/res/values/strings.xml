@@ -31,4 +31,6 @@
   <string name="linkingAccount_action_tryAgain">Try again</string>
   <string name="success_cd_successLinking">Success linking account</string>
   <string name="success_cd_errorLinking">An error occurred while linking your account.</string>
+  <string name="notification_message_check_website">Check your institution\'s website to check that it\'s working properly.</string>
+  <string name="screen_linking_site_description_visit_website">Check your institution\'s website to check that it\'s working properly.</string>
 </resources>
