@@ -69,7 +69,7 @@ dependencies {
   api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
   // Websockets
-  implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+  implementation 'com.squareup.okhttp3:okhttp:3.11.0'
 
   // Fontawesome
   implementation 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
