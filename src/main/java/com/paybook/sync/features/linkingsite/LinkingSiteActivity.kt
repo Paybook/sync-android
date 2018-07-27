@@ -69,6 +69,10 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
   }
 
   override fun inject() {
+    val navigator = LinkingSiteNavigator(this, applicationContext)
+    val messages = LinkingSiteMessages(this)
+    val repository = SyncModule.linkingSiteRepository
+    presenter = LinkingSitePresenter(this, navigator, messages, repository)
     if (data == null && intent.hasExtra(IK_DATA)) {
       data = intent.getSerializableExtra(IK_DATA) as LinkingSiteData
     } else if (intent.hasExtra(IK_EVENT)) {
@@ -82,11 +86,6 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
     } else {
       throw IllegalStateException("Unexpected launch without LinkingSiteData provided")
     }
-
-    val navigator = LinkingSiteNavigator(this, applicationContext)
-    val messages = LinkingSiteMessages(this)
-    val repository = SyncModule.linkingSiteRepository
-    presenter = LinkingSitePresenter(this, navigator, messages, repository)
   }
 
   override fun onNewIntent(intent: Intent) {
