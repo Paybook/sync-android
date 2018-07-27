@@ -34,7 +34,7 @@ class AddAccountWebSocketResponse(
     get() = code == 301 || code in 401..403
 
   val isAccountLocked: Boolean
-    get() = code == 405
+    get() = code == 405 || code == 408
 
   val isUserLoggedIn: Boolean
     get() = code == 406
