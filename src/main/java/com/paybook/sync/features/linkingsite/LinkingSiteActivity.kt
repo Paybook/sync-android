@@ -22,8 +22,8 @@ import java.lang.ref.WeakReference
 class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
 
   companion object {
-    private const val IK_DATA = "com.paybook.glass.linkingsite.data"
-    private const val IK_EVENT = "com.paybook.glass.linkingsite.event"
+    private const val IK_DATA = "com.paybook.sync.linkingsite.data"
+    private const val IK_EVENT = "com.paybook.sync.linkingsite.event"
 
     // Creational methods.
     fun newIntent(
@@ -129,7 +129,7 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
   // View methods
   override fun registerForLinkingSiteEvents() {
     val intentFilter = LinkingSiteBroadcastService.intentFilter()
-    val permission = LinkingSiteBroadcastService.permission()
+    val permission = SyncModule.permission
     registerReceiver(broadcastReceiver, intentFilter, permission, null)
   }
 

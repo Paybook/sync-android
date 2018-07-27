@@ -1,12 +1,17 @@
 package com.paybook.sync
 
+import android.util.Log
+import com.google.gson.Gson
+import com.paybook.sync.AddAccountRxWebSocket.SocketEventType.MESSAGE
+import io.reactivex.BackpressureStrategy.BUFFER
+import io.reactivex.Flowable
 import io.reactivex.Observable
-import java.io.EOFException
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
+import java.io.EOFException
 
 /**
  * Created by Gerardo Teruel on 10/17/17.
@@ -22,39 +27,69 @@ object AddAccountRxWebSocket {
   }
 
   /** The type and payload of a websocket event  */
-  class SocketEvent internal constructor(
+  data class SocketEvent(
     val type: SocketEventType,
-    val payload: String
+    val payload: AddAccountWebSocketResponse? = null
   )
 
-  /** Use this method to get an observable for socket events.  */
-  fun observable(okHttpClient: OkHttpClient, url: String): Observable<SocketEvent> {
+  /** Use this method to get an stream for socket events.  */
+  fun stream(
+    okHttpClient: OkHttpClient,
+    url: String
+  ): Flowable<SocketEvent> {
     val request = Request.Builder()
         .get()
         .url(url)
         .build()
-    return Observable.create { e ->
+
+    return Flowable.create<SocketEvent>({ e ->
       okHttpClient.newWebSocket(request, object : WebSocketListener() {
-        override fun onOpen(webSocket: WebSocket?, response: Response?) {
-          e.onNext(SocketEvent(SocketEventType.CONNECTED, ""))
+        override fun onOpen(
+          webSocket: WebSocket?,
+          response: Response?
+        ) {
+          Log.e("WS", "Connected")
+          e.onNext(SocketEvent(SocketEventType.CONNECTED))
         }
 
-        override fun onMessage(webSocket: WebSocket?, text: String?) {
-          e.onNext(SocketEvent(SocketEventType.MESSAGE, text!!))
-        }
-
-        override fun onClosed(webSocket: WebSocket?, code: Int, reason: String?) {
-          e.onComplete()
-        }
-
-        override fun onFailure(webSocket: WebSocket?, t: Throwable?, response: Response?) {
-          if (t !is EOFException) {
-            e.onError(t)
-          } else {
+        override fun onMessage(
+          webSocket: WebSocket?,
+          text: String?
+        ) {
+          val gson = Gson()
+          Log.e("WS", text)
+          val payload = gson.fromJson(text, AddAccountWebSocketResponse::class.java)
+          e.onNext(SocketEvent(SocketEventType.MESSAGE, payload))
+          if (payload.isTerminal()) {
             e.onComplete()
           }
         }
+
+        override fun onClosed(
+          webSocket: WebSocket?,
+          code: Int,
+          reason: String?
+        ) {
+          Log.e("WS", "Closed")
+          e.onComplete()
+        }
+
+        override fun onFailure(
+          webSocket: WebSocket?,
+          t: Throwable?,
+          response: Response?
+        ) {
+          Log.e("WS", "FAILED", t)
+          if (t is EOFException) {
+            val payload = AddAccountWebSocketResponse(code = 411)
+            e.onNext(SocketEvent(MESSAGE, payload))
+            e.onComplete()
+          } else {
+            e.onError(t)
+          }
+        }
       })
-    }
+
+    }, BUFFER)
   }
 }

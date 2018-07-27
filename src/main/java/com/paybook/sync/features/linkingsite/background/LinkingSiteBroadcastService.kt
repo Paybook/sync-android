@@ -5,30 +5,26 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
-import com.google.gson.Gson
+import android.util.Log
 import com.paybook.core.BaseService
 import com.paybook.core.exception.OnErrorNotImplementedException
 import com.paybook.sync.AddAccountRxWebSocket
-import com.paybook.sync.AddAccountRxWebSocket.SocketEvent
-import com.paybook.sync.AddAccountRxWebSocket.SocketEventType.END
 import com.paybook.sync.AddAccountWebSocketResponse
 import com.paybook.sync.SyncModule
+import com.paybook.sync.TwoFaImageResponse
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.LinkingSiteEventType
 import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
 import com.paybook.sync.entities.twofa.TwoFaCredential
 import com.paybook.sync.entities.twofa.TwoFaImage
-import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.OkHttpClient
 import java.io.File
 import java.io.IOException
 import java.io.PrintWriter
 import java.lang.ref.WeakReference
-import java.net.SocketTimeoutException
 import java.util.ArrayList
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by Gerardo Teruel on 3/27/18.
@@ -58,50 +54,34 @@ class LinkingSiteBroadcastService : BaseService() {
     val jobId = intent.getStringExtra(IK_JOB_ID)
     val schedulerProvider = SyncModule.scheduler
 
-    val gson = Gson()
     val client = OkHttpClient.Builder()
-        .pingInterval(30, TimeUnit.SECONDS)
+//        .pingInterval(30, TimeUnit.SECONDS)
         .build()
     val imageConverter = TwoFaImageConverter(jobId, this)
 
-    val d = AddAccountRxWebSocket.observable(client, webSocket)
-        .onErrorReturn {
-          if (it is SocketTimeoutException) {
-            stopSelf(startId)
-            SocketEvent(END, "")
-          } else {
-            throw IllegalStateException("Unexpected socket error", it)
-          }
-        }
+    val d = AddAccountRxWebSocket.stream(client, webSocket)
         .observeOn(schedulerProvider.io())
         .doOnTerminate {
           imageConverter.clear()
           stopSelf(startId)
         }
+        .doOnNext { Log.e("RX", it.toString()) }
         .filter { e -> e.type === AddAccountRxWebSocket.SocketEventType.MESSAGE }
-        .map { e -> gson.fromJson(e.payload, AddAccountWebSocketResponse::class.java) }
-        // We delay so that there's a window of time for the user to go back to the view before
-        // a response is processed.
-        .concatMap { e ->
-          Observable.just(e)
-              .delay(500, TimeUnit.MILLISECONDS)
-        }
-        .map { r ->
-          linkingSite(
-              organization, site, jobId, r as AddAccountWebSocketResponse, imageConverter
-          )
-        }
+        .doOnNext { Log.e("RX-DELAY", it.toString()) }
+        .map { r -> linkingSite(organization, site, jobId, r.payload!!, imageConverter) }
+        .doOnComplete { Log.e("RX", "Complete") }
         .subscribe({ r ->
           val i = Intent(ACTION_LINKING_SITE_EVENT)
           i.putExtra(IK_DATA, r)
-          sendOrderedBroadcast(i, PERMISSION)
+          sendOrderedBroadcast(i, SyncModule.permission)
+          Log.e("SUBSCRIPTION", r.toString())
         }) { e -> throw OnErrorNotImplementedException(e) }
     this.disposable!!.add(d)
 
     return Service.START_REDELIVER_INTENT
   }
 
-  fun linkingSite(
+  private fun linkingSite(
     organization: Organization,
     site: Site,
     jobId: String,
@@ -129,7 +109,7 @@ class LinkingSiteBroadcastService : BaseService() {
   ) {
     private val context = WeakReference<Context>(context)
 
-    fun convert(twoFaImages: List<AddAccountWebSocketResponse.TwoFaImageResponse>): List<TwoFaImage> {
+    fun convert(twoFaImages: List<TwoFaImageResponse>): List<TwoFaImage> {
       val values = ArrayList<TwoFaImage>()
       for (twoFaImage in twoFaImages) {
         val fileWithValue = if (!twoFaImage.isUrl) {
@@ -145,7 +125,7 @@ class LinkingSiteBroadcastService : BaseService() {
       return values
     }
 
-    private fun store(twoFaImage: AddAccountWebSocketResponse.TwoFaImageResponse) {
+    private fun store(twoFaImage: TwoFaImageResponse) {
       try {
         context.get()!!
             .openFileOutput(filename(twoFaImage), Context.MODE_PRIVATE)
@@ -159,7 +139,7 @@ class LinkingSiteBroadcastService : BaseService() {
 
     }
 
-    private fun filename(twoFaImage: AddAccountWebSocketResponse.TwoFaImageResponse): String {
+    private fun filename(twoFaImage: TwoFaImageResponse): String {
       return jobId + File.separator + IMAGE_PREFIX + twoFaImage.value.toString()
     }
 
@@ -178,17 +158,16 @@ class LinkingSiteBroadcastService : BaseService() {
   }
 
   companion object {
-    private const val ACTION_LINKING_SITE_EVENT = "com.paybook.glass.linkingsite.event"
-    private val PERMISSION = SyncModule.permission
+    private const val ACTION_LINKING_SITE_EVENT = "com.paybook.sync.linkingsite.event"
 
-    private const val IK_DATA = "com.paybook.glass.linkingsite.event.data"
+    private const val IK_DATA = "com.paybook.sync.linkingsite.event.data"
 
     private const val IK_SOCKET_URL =
-      "com.paybook.glass.features.addinstitution.linkingsite.websocketurl"
+      "com.paybook.sync.features.addinstitution.linkingsite.websocketurl"
     private const val IK_ORGANIZATION =
-      "com.paybook.glass.features.addinstitution.linkingsite.organization"
-    private const val IK_SITE = "com.paybook.glass.features.addinstitution.linkingsite.site"
-    private const val IK_JOB_ID = "com.paybook.glass.features.addinstitution.linkingsite.jobId"
+      "com.paybook.sync.features.addinstitution.linkingsite.organization"
+    private const val IK_SITE = "com.paybook.sync.features.addinstitution.linkingsite.site"
+    private const val IK_JOB_ID = "com.paybook.sync.features.addinstitution.linkingsite.jobId"
 
     fun intentFilter(): IntentFilter {
       return IntentFilter(ACTION_LINKING_SITE_EVENT)
@@ -196,10 +175,6 @@ class LinkingSiteBroadcastService : BaseService() {
 
     fun parse(data: Intent): LinkingSiteEvent {
       return data.getSerializableExtra(IK_DATA) as LinkingSiteEvent
-    }
-
-    fun permission(): String {
-      return PERMISSION
     }
 
     fun newIntent(

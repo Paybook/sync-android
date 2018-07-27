@@ -11,7 +11,7 @@ import java.io.Serializable
  * organization provides. Should be instantiated using the [.Builder] method. The
  * natural order of organizations is to be sorted by their name.
  */
-class Organization(
+data class Organization(
   val id: String,
   val typeId: String,
   val name: String,

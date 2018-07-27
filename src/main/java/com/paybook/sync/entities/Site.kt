@@ -6,7 +6,7 @@ import java.io.Serializable
  * Created by Gerardo Teruel on 9/1/17.
  */
 
-class Site(
+data class Site(
   val id: String,
   val name: String,
   val credentials: List<SiteCredential>,
@@ -28,18 +28,5 @@ class Site(
 
   override fun compareTo(other: Site): Int {
     return this.name.compareTo(other.name)
-  }
-
-  override fun toString(): String {
-    return ("Site{"
-        + "id='"
-        + id
-        + '\''.toString()
-        + ", name='"
-        + name
-        + '\''.toString()
-        + ", credentials="
-        + credentials
-        + '}'.toString())
   }
 }

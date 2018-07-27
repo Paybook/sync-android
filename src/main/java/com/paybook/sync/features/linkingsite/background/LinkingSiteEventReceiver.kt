@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.paybook.sync.SyncModule
 
 /**
@@ -18,6 +19,7 @@ class LinkingSiteEventReceiver : BroadcastReceiver() {
     val event = LinkingSiteBroadcastService.parse(intent)
     repository.clear(event.jobId).subscribe()
 
+    Log.e("RECEIVER", event.toString())
     if (resultCode == Activity.RESULT_CANCELED) {
       return
     }

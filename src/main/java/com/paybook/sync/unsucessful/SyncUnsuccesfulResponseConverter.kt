@@ -8,11 +8,11 @@ import java.io.IOException
 /**
  * Created by Gerardo Teruel on 7/23/18.
  */
-class UnsuccesfulResponseConverter : Converter<ResponseBody, UnsuccesfulResponse> {
+class SyncUnsuccesfulResponseConverter : Converter<ResponseBody, SyncUnsuccesfulResponse> {
   @Throws(IOException::class)
-  override fun convert(value: ResponseBody): UnsuccesfulResponse {
+  override fun convert(value: ResponseBody): SyncUnsuccesfulResponse {
     val gson = Gson()
-    return gson.fromJson(value.string(), UnsuccesfulResponse::class.java)
+    return gson.fromJson(value.string(), SyncUnsuccesfulResponse::class.java)
   }
 }
 

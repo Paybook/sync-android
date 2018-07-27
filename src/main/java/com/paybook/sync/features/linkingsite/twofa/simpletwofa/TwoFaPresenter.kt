@@ -5,7 +5,7 @@ import com.paybook.sync.SyncModule
 import com.paybook.sync.features.linkingsite.LinkingSiteData
 import com.paybook.sync.useCases.VerifyTwoFaUseCase
 import com.paybook.sync.entities.LinkingSiteEvent
-import com.paybook.sync.unsucessful.UnsuccesfulResponseException
+import com.paybook.sync.unsucessful.SyncUnsuccesfulResponseException
 import io.reactivex.disposables.Disposable
 import java.io.IOException
 
@@ -32,7 +32,7 @@ class TwoFaPresenter(
               val error = it.error()
               when (error) {
                 is IOException -> view.showNetworkError()
-                is UnsuccesfulResponseException -> view.showUnexpectedError(error.response.message())
+                is SyncUnsuccesfulResponseException -> view.showUnexpectedError(error.response.message())
                 else -> throw error
               }
             }

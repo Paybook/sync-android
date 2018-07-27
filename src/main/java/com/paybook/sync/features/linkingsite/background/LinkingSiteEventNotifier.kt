@@ -6,6 +6,7 @@ import android.content.Intent
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.app.TaskStackBuilder
+import android.util.Log
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
 import com.paybook.sync.features.linksite.LinkSiteActivity
@@ -37,6 +38,7 @@ class LinkingSiteEventNotifier(context: Context, private val event: LinkingSiteE
     if (event.eventType == PROCESSING) {
       return
     }
+    Log.e("NOTIFIER", event.toString())
     notificationBuilder.setDefaults(NotificationCompat.DEFAULT_ALL)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setSmallIcon(SyncModule.notificationIcon)

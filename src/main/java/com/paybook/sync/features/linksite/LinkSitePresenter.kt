@@ -7,7 +7,7 @@ import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
 import com.paybook.sync.features.linkingsite.LinkingSiteData
 import com.paybook.sync.networkModels.AddAccountRequest
-import com.paybook.sync.unsucessful.UnsuccesfulResponseException
+import com.paybook.sync.unsucessful.SyncUnsuccesfulResponseException
 import com.paybook.sync.useCases.LinkAccountUseCase
 import io.reactivex.disposables.Disposable
 
@@ -45,7 +45,7 @@ class LinkSitePresenter(
             result.isNetworkError -> view.showNetworkError()
             else -> {
               val error = result.error()
-              if (error is UnsuccesfulResponseException) {
+              if (error is SyncUnsuccesfulResponseException) {
                 view.showError(error.response.message())
               } else {
                 throw error
