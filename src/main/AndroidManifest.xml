@@ -20,7 +20,7 @@
         android:name=".features.linkingsite.background.LinkingSiteEventReceiver"
         android:exported="false">
       <intent-filter android:priority="-999">
-        <action android:name="com.paybook.glass.linkingsite.event"/>
+        <action android:name="com.paybook.sync.linkingsite.event"/>
       </intent-filter>
     </receiver>
   </application>
