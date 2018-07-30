@@ -2,6 +2,7 @@ package com.paybook.sync.util
 
 import android.content.Context
 import io.reactivex.Observable
+import io.reactivex.Single
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.ObjectInputStream
@@ -17,7 +18,10 @@ class FileStorage(context: Context) {
 
   private val contextReference = WeakReference<Context>(context)
 
-  fun <T : Serializable> store(key: String, value: T): Observable<Boolean> {
+  fun <T : Serializable> store(
+    key: String,
+    value: T
+  ): Observable<Boolean> {
     return Observable.defer {
       val context = contextReference.get()!!.applicationContext
       try {
@@ -35,24 +39,30 @@ class FileStorage(context: Context) {
     }
   }
 
-  fun <T> retrieve(key: String): Observable<T> {
-    return Observable.defer {
+  fun <T> retrieve(key: String): Single<T>? {
+    var ready = true
+    val source = Single.defer {
       val context = contextReference.get()!!.applicationContext
       try {
         context.openFileInput(key)
             .use { `is` ->
               val objectInputStream = ObjectInputStream(`is`)
               @Suppress("UNCHECKED_CAST")
-              Observable.just<T>(objectInputStream.readObject() as T)
+              Single.just<T>(objectInputStream.readObject() as T)
             }
       } catch (e: FileNotFoundException) {
-        throw IllegalStateException(e)
+        ready = false
+        null
       } catch (e: IOException) {
         throw IllegalStateException(e)
       } catch (e: ClassNotFoundException) {
         throw IllegalStateException(e)
       }
     }
+    if (ready) {
+      return source
+    }
+    return null
   }
 
   fun clear(key: String): Observable<Boolean> {

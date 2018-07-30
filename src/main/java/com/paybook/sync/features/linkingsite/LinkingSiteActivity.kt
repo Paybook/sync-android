@@ -117,12 +117,7 @@ class LinkingSiteActivity : BaseActivity(), LinkingSiteContract.View {
 
   // Callbacks.
   fun onResponseReceived(event: LinkingSiteEvent) {
-    val type = event.eventType
-    when {
-      type === LinkingSiteEventType.TWO_FA -> presenter.onTwoFa(event)
-      type === LinkingSiteEventType.TWO_FA_IMAGES -> presenter.onTwoFaImages(event)
-      else -> presenter.onEvent(event)
-    }
+    presenter.onEvent(event)
   }
 
   // View methods

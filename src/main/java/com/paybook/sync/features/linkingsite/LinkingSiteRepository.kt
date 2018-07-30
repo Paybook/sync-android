@@ -7,6 +7,7 @@ import com.paybook.sync.util.FileStorage
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.LinkingSiteEventType
 import io.reactivex.Observable
+import io.reactivex.Single
 
 /**
  * Created by Gerardo Teruel on 3/27/18.
@@ -36,12 +37,7 @@ class LinkingSiteRepository(
         .apply()
   }
 
-  fun lastBackgroundEventType(jobId: String): LinkingSiteEventType? {
-    val eventOrdinal = sharedPreferences.getInt(key(jobId), -1)
-    return if (eventOrdinal != -1) LinkingSiteEventType.values()[eventOrdinal] else null
-  }
-
-  fun event(jobId: String): Observable<LinkingSiteEvent> {
+  fun event(jobId: String): Single<LinkingSiteEvent>? {
     return fileStorage.retrieve(key(jobId))
   }
 

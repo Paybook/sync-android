@@ -53,6 +53,7 @@ class LinkingSiteBroadcastService : BaseService() {
     val site = intent.getSerializableExtra(IK_SITE) as Site
     val jobId = intent.getStringExtra(IK_JOB_ID)
     val schedulerProvider = SyncModule.scheduler
+    val repository = SyncModule.linkingSiteRepository
 
     val client = OkHttpClient.Builder()
 //        .pingInterval(30, TimeUnit.SECONDS)
@@ -70,11 +71,12 @@ class LinkingSiteBroadcastService : BaseService() {
         .doOnNext { Log.e("RX-DELAY", it.toString()) }
         .map { r -> linkingSite(organization, site, jobId, r.payload!!, imageConverter) }
         .doOnComplete { Log.e("RX", "Complete") }
-        .subscribe({ r ->
+        .subscribe({ event ->
+          repository.setBackgroundEvent(event)
           val i = Intent(ACTION_LINKING_SITE_EVENT)
-          i.putExtra(IK_DATA, r)
+          i.putExtra(IK_DATA, event)
           sendOrderedBroadcast(i, SyncModule.permission)
-          Log.e("SUBSCRIPTION", r.toString())
+          Log.e("SUBSCRIPTION", event.toString())
         }) { e -> throw OnErrorNotImplementedException(e) }
     this.disposable!!.add(d)
 

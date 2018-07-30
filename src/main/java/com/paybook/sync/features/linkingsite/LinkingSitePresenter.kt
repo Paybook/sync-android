@@ -1,9 +1,10 @@
 package com.paybook.sync.features.linkingsite
 
+import com.paybook.core.exception.OnErrorNotImplementedException
 import com.paybook.sync.entities.LinkingSiteEvent
-import com.paybook.sync.entities.LinkingSiteEventType
 import com.paybook.sync.entities.LinkingSiteEventType.ACCOUNT_LOCKED
 import com.paybook.sync.entities.LinkingSiteEventType.ALREADY_LOGGED_IN
+import com.paybook.sync.entities.LinkingSiteEventType.CHECK_WEBSITE
 import com.paybook.sync.entities.LinkingSiteEventType.INCORRECT_CREDENTIALS
 import com.paybook.sync.entities.LinkingSiteEventType.PROCESSING
 import com.paybook.sync.entities.LinkingSiteEventType.SERVER_ERROR
@@ -27,70 +28,42 @@ class LinkingSitePresenter(
 ) : LinkingSiteContract.Presenter {
 
   override fun onEvent(event: LinkingSiteEvent) {
-    if (event.eventType == TWO_FA || event.eventType == TWO_FA_IMAGES) {
-      throw IllegalArgumentException("$event must be handled in its appropriate method.")
-    }
     with(messages) {
       when (event.eventType) {
         SUCCESS -> navigator.openSuccess()
-        INCORRECT_CREDENTIALS ->
-          navigator.openError(descriptionIncorrectCredentials(), event.organization, event.site)
-        ACCOUNT_LOCKED ->
-          navigator.openError(descriptionAccountLocked(), event.organization, event.site)
-        ALREADY_LOGGED_IN ->
-          navigator.openError(descriptionAlreadyLoggedIn(), event.organization, event.site)
-        TIMEOUT ->
-          navigator.openError(descriptionAlreadyLoggedIn(), event.organization, event.site)
-        SERVER_ERROR ->
-          navigator.openError("", event.organization, event.site)
-        PROCESSING -> Unit
-        LinkingSiteEventType.CHECK_WEBSITE -> navigator.openError(descriptionVisitWebsite(), event.organization, event.site)
-        LinkingSiteEventType.TWO_FA -> throw IllegalStateException("Handle two fa in appropiate method")
-        LinkingSiteEventType.TWO_FA_IMAGES -> throw IllegalStateException("Handle two fa in appropiate method")
+        INCORRECT_CREDENTIALS -> navigator.openError(
+            descriptionIncorrectCredentials(), event.organization, event.site
+        )
+        ACCOUNT_LOCKED -> navigator.openError(
+            descriptionAccountLocked(), event.organization, event.site
+        )
+        ALREADY_LOGGED_IN -> navigator.openError(
+            descriptionAlreadyLoggedIn(), event.organization, event.site
+        )
+        TIMEOUT -> navigator.openError(descriptionAlreadyLoggedIn(), event.organization, event.site)
+        SERVER_ERROR -> navigator.openError("", event.organization, event.site)
+        PROCESSING -> navigator.openLoading()
+        CHECK_WEBSITE -> navigator.openError(
+            descriptionVisitWebsite(), event.organization, event.site
+        )
+        TWO_FA -> navigator.openTwoFaScreen(event)
+        TWO_FA_IMAGES -> navigator.openTwoFaImagesScreen(event)
       }
     }
   }
 
   override fun subscribe(jobId: String): Disposable? {
     view.registerForLinkingSiteEvents()
+    repository.event(jobId)
+        ?.let {
+          return it.subscribe({ event ->
+            onEvent(event)
+          }) {
+            throw OnErrorNotImplementedException(it)
+          }
+        }
     navigator.openLoading()
     return null
-//    val event = repository.lastBackgroundEventType(jobId)
-//    if (event == null) {
-//      view.registerForLinkingSiteEvents()
-//      return null
-//    }
-//
-//    return when (event) {
-//      TWO_FA -> {
-//        repository.event(jobId)
-//            .observeOn(schedulerProvider.ui())
-//            .doOnNext { d -> onTwoFa(d) }
-//      }
-//      TWO_FA_IMAGES -> {
-//        repository.event(jobId)
-//            .observeOn(schedulerProvider.ui())
-//            .doOnNext { d -> onTwoFaImages(d) }
-//      }
-//      else -> {
-//        Observable.just(true)
-//            .observeOn(schedulerProvider.ui())
-//            .doOnNext { onEvent(event) }
-//      }
-//    }.doOnNext { view.hideNotification(jobId) }
-//        .observeOn(schedulerProvider.io())
-//        .flatMap {
-//          repository.clear(jobId)
-//        }
-//        .subscribe()
-  }
-
-  override fun onTwoFa(event: LinkingSiteEvent) {
-    navigator.openTwoFaScreen(event)
-  }
-
-  override fun onTwoFaImages(event: LinkingSiteEvent) {
-    navigator.openTwoFaImagesScreen(event)
   }
 
   override fun onReattemptLink(
