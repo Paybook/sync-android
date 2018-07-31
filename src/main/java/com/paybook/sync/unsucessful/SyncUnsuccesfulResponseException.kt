@@ -5,5 +5,8 @@ package com.paybook.sync.unsucessful
  */
 data class SyncUnsuccesfulResponseException(
   val response: SyncUnsuccesfulResponse
-) : RuntimeException(response.toString())
+) : RuntimeException(response.toString()) {
+
+  fun describe() = response.message()
+}
 
