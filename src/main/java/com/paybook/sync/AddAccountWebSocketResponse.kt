@@ -26,10 +26,10 @@ class AddAccountWebSocketResponse(
 
   @Suppress("MemberVisibilityCanBePrivate")
   val isProcessing: Boolean
-    get() = code in 100..105
+    get() = code in 100..103
 
   val isSuccess: Boolean
-    get() = code in 200..203
+    get() = code in 200..205
 
   val isError: Boolean
     get() = code == 301 || code in 401..403
