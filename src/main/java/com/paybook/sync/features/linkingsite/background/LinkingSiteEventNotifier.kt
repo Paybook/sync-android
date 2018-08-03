@@ -59,6 +59,7 @@ class LinkingSiteEventNotifier(
     notificationBuilder.setDefaults(NotificationCompat.DEFAULT_ALL)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setSmallIcon(SyncModule.notificationIcon)
+        .setChannelId(CHANNEL_ID)
         .setAutoCancel(true)
         .setContentTitle(title())
         .setContentText(description())

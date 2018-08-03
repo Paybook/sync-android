@@ -42,11 +42,9 @@ class SyncModule private constructor() {
 
     fun configure(
       homeIntentFactory: IntentFactory,
-      token: String? = null,
-      icon: Int = R.drawable.sync_icon
+      token: String? = null
     ) {
       this.homeIntentFactory = homeIntentFactory
-      this.notificationIcon = icon
       token?.let {
         this.tokenRepository.setToken(it)
       }
@@ -57,10 +55,12 @@ class SyncModule private constructor() {
       url: String,
       imagesUrlBase: String,
       permission: String,
+      icon: Int = R.drawable.sync_icon,
       isTest: Boolean = false,
       interceptor: Interceptor? = null
     ) {
 
+      this.notificationIcon = icon
       val sharedPreferences = context.getSharedPreferences("sync", Context.MODE_PRIVATE)
       val fileStorage = FileStorage(context)
       this.tokenRepository = TokenRepository(sharedPreferences)
