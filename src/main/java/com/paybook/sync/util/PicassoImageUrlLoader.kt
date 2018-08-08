@@ -18,8 +18,8 @@ class PicassoImageUrlLoader(
   private val url: String?,
   override var placeholder: Either<Drawable, Int>? = null,
   override var error: Either<Drawable, Int>? = null,
-  override var onErrorListener: ErrorListener? = null,
-  override var onSuccessListener: SuccessListener? = null
+  override var onErrorListener: (() -> Unit)? = null,
+  override var onSuccessListener: (() -> Unit)? = null
 ) : ImageUrlLoader {
 
   override fun load(target: ImageView) {
@@ -30,11 +30,11 @@ class PicassoImageUrlLoader(
     error?.fold({ requestCreator.error(it) }, { requestCreator.error(it) })
     requestCreator.into(target, object : Callback {
       override fun onSuccess() {
-        onSuccessListener?.onSuccess()
+        onSuccessListener?.invoke()
       }
 
       override fun onError(e: Exception) {
-        onErrorListener?.onError()
+        onErrorListener?.invoke()
       }
     })
   }
