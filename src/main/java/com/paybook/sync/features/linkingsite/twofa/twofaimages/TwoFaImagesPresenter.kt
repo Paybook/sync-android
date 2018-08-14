@@ -33,7 +33,9 @@ class TwoFaImagesPresenter(
             response.isError -> view.showUnexpectedError()
             response.isSuccess -> navigator.openLinkingSite(event)
           }
-        }) { t -> OnErrorNotImplementedException.rethrow(t, javaClass) }
+        }) { t ->
+          throw OnErrorNotImplementedException(t)
+        }
   }
 
   override fun subscribe(event: LinkingSiteEvent) {

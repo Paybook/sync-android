@@ -54,16 +54,14 @@ class LinkingSitePresenter(
 
   override fun subscribe(jobId: String): Disposable? {
     view.registerForLinkingSiteEvents()
-    repository.event(jobId)
-        ?.let {
-          return it.subscribe({ event ->
-            onEvent(event)
-          }) {
-            throw OnErrorNotImplementedException(it)
-          }
+    return repository.event(jobId)
+        .subscribe({
+          onEvent(it)
+        }, {
+          throw OnErrorNotImplementedException(it)
+        }) {
+          navigator.openLoading()
         }
-    navigator.openLoading()
-    return null
   }
 
   override fun onReattemptLink(

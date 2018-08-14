@@ -6,6 +6,7 @@ import com.paybook.sync.SyncModule
 import com.paybook.sync.util.FileStorage
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.LinkingSiteEventType
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -37,7 +38,7 @@ class LinkingSiteRepository(
         .apply()
   }
 
-  fun event(jobId: String): Single<LinkingSiteEvent>? {
+  fun event(jobId: String): Maybe<LinkingSiteEvent> {
     return fileStorage.retrieve(key(jobId))
   }
 

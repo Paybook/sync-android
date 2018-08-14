@@ -42,7 +42,7 @@ class TwoFaPresenter(
             }
           }
         }) { t ->
-          OnErrorNotImplementedException.rethrow(t, javaClass)
+          throw OnErrorNotImplementedException(t)
         }
   }
 

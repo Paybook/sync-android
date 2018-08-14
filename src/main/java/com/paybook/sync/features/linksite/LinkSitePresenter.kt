@@ -53,7 +53,7 @@ class LinkSitePresenter(
             }
           }
         }) { t ->
-          OnErrorNotImplementedException.rethrow(t, javaClass)
+          throw OnErrorNotImplementedException(t)
         }
 
   }
