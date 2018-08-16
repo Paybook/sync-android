@@ -4,9 +4,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.paybook.core.Either
 import com.paybook.core.fold
-import com.paybook.core.imageLoader.ErrorListener
 import com.paybook.core.imageLoader.ImageUrlLoader
-import com.paybook.core.imageLoader.SuccessListener
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
