@@ -1,6 +1,7 @@
 package com.paybook.sync.features.linkingsite
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.paybook.core.schedulers.SchedulerProvider
 import com.paybook.sync.SyncModule
 import com.paybook.sync.util.FileStorage
@@ -31,7 +32,11 @@ class LinkingSiteRepository(
 
     fileStorage.store(key(event.jobId), event)
         .observeOn(schedulerProvider.io())
-        .subscribe()
+        .subscribe({
+          Log.e("REPO", "Saved")
+        }) {
+          throw it
+        }
 
     sharedPreferences.edit()
         .putInt(key(event.jobId), value)

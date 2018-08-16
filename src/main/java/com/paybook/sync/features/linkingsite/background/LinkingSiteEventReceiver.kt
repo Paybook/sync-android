@@ -24,7 +24,6 @@ class LinkingSiteEventReceiver : BroadcastReceiver() {
       return
     }
 
-    repository.setBackgroundEvent(event)
     LinkingSiteEventNotifier(context, event).sendNotification()
   }
 

@@ -1,6 +1,7 @@
 package com.paybook.sync.util
 
 import android.content.Context
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import java.io.FileNotFoundException
@@ -21,8 +22,8 @@ class FileStorage(context: Context) {
   fun <T : Serializable> store(
     key: String,
     value: T
-  ): Observable<Boolean> {
-    return Observable.defer {
+  ): Completable {
+    return Completable.defer {
       val context = contextReference.get()!!.applicationContext
       try {
         context.openFileOutput(key, Context.MODE_PRIVATE)
@@ -31,15 +32,14 @@ class FileStorage(context: Context) {
               objectOutputStream.writeObject(value)
               objectOutputStream.close()
             }
+        Completable.complete()
       } catch (e: IOException) {
-        throw IllegalStateException("Couldn't open file for files", e)
+        Completable.error(IllegalStateException("Couldn't open file for files", e))
       }
-
-      Observable.just(true)
     }
   }
 
-  fun <T: Serializable> retrieve(key: String): Maybe<T> {
+  fun <T : Serializable> retrieve(key: String): Maybe<T> {
     return Maybe.defer {
       try {
         contextReference.get()!!.openFileInput(key)
