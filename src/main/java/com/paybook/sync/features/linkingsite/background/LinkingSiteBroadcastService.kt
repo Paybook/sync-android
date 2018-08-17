@@ -13,10 +13,8 @@ import com.paybook.sync.AddAccountWebSocketResponse
 import com.paybook.sync.SyncModule
 import com.paybook.sync.TwoFaImageResponse
 import com.paybook.sync.entities.LinkingSiteEvent
-import com.paybook.sync.entities.LinkingSiteEventType
 import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
-import com.paybook.sync.entities.twofa.TwoFaCredential
 import com.paybook.sync.entities.twofa.TwoFaImage
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -25,7 +23,6 @@ import java.io.File
 import java.io.IOException
 import java.io.PrintWriter
 import java.lang.ref.WeakReference
-import java.util.ArrayList
 
 /**
  * Created by Gerardo Teruel on 3/27/18.
@@ -68,9 +65,7 @@ class LinkingSiteBroadcastService : BaseService() {
           stopSelf(startId)
         }
         .doOnNext { Log.e("RX", it.toString()) }
-        .filter { e -> e.type === AddAccountRxWebSocket.SocketEventType.MESSAGE }
-        .doOnNext { Log.e("RX-DELAY", it.toString()) }
-        .map { r -> linkingSite(organization, site, jobId, r.payload!!, imageConverter) }
+        .map { build(organization, site, jobId, it, imageConverter) }
         .doOnComplete {
           Log.e("RX", "Complete")
           repository.clear(jobId = jobId)
@@ -80,6 +75,7 @@ class LinkingSiteBroadcastService : BaseService() {
               .andThen(Single.just(it))
               .toFlowable()
         }
+        .doOnNext { Log.e("FINAL", "$it") }
         .subscribe({ event: LinkingSiteEvent ->
           repository.saveEvent(event)
           val i = Intent(ACTION_LINKING_SITE_EVENT)
@@ -93,48 +89,42 @@ class LinkingSiteBroadcastService : BaseService() {
     return Service.START_REDELIVER_INTENT
   }
 
-  private fun linkingSite(
+  private fun build(
     organization: Organization,
     site: Site,
     jobId: String,
     response: AddAccountWebSocketResponse,
     imageConverter: TwoFaImageConverter
   ): LinkingSiteEvent {
-    val type = response.toEvent()
-    var twoFaImages: List<TwoFaImage>? = null
-    var twoFaCredentials: List<TwoFaCredential>? = null
-
-    if (type === LinkingSiteEventType.TWO_FA) {
-      twoFaCredentials = response.credentials
-    } else if (type === LinkingSiteEventType.TWO_FA_IMAGES) {
-      twoFaImages = imageConverter.convert(response.imageOptions!!)
-    }
-
     return LinkingSiteEvent(
-        organization, site, jobId, type, twoFaCredentials, twoFaImages
+        organization = organization,
+        site = site,
+        jobId = jobId,
+        eventType = response.toEvent(),
+        twoFaCredentials = response.credentials,
+        twoFaImages = imageConverter.convert(response.imageOptions),
+        label =  response.label
     )
   }
 
-  class TwoFaImageConverter internal constructor(
+  class TwoFaImageConverter(
     private val jobId: String,
     context: Context
   ) {
     private val context = WeakReference<Context>(context)
 
-    fun convert(twoFaImages: List<TwoFaImageResponse>): List<TwoFaImage> {
-      val values = ArrayList<TwoFaImage>()
-      for (twoFaImage in twoFaImages) {
-        val fileWithValue = if (!twoFaImage.isUrl) {
-          store(twoFaImage)
-          val uri = Uri.fromFile(File(filename(twoFaImage)))
-              .toString()
-          TwoFaImage(uri, twoFaImage.value)
+    fun convert(twoFaImages: List<TwoFaImageResponse>?): List<TwoFaImage>? {
+      return twoFaImages?.map {
+        if (it.isUrl) {
+          TwoFaImage(it.imgURL!!, it.value)
         } else {
-          TwoFaImage(twoFaImage.imgUrl!!, twoFaImage.value)
+          store(it)
+          TwoFaImage(
+              uri = Uri.fromFile(File(filename(twoFaImage = it))).toString(),
+              value = it.value
+          )
         }
-        values.add(fileWithValue)
       }
-      return values
     }
 
     private fun store(twoFaImage: TwoFaImageResponse) {
@@ -143,7 +133,7 @@ class LinkingSiteBroadcastService : BaseService() {
             .openFileOutput(filename(twoFaImage), Context.MODE_PRIVATE)
             .use { os ->
               val writer = PrintWriter(os)
-              writer.print(twoFaImage.img)
+              writer.print(twoFaImage.imgBase64File!!)
             }
       } catch (e: IOException) {
         throw IllegalStateException("Couldn't write two fa image", e)

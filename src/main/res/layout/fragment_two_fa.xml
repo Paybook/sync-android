@@ -24,7 +24,7 @@
       />
 
   <TextView
-      android:id="@+id/txtAdditionalInfo"
+      android:id="@+id/txtDescription"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/margin_nl"
@@ -33,7 +33,7 @@
       android:maxLines="2"
       android:paddingLeft="@dimen/margin_nl"
       android:paddingRight="@dimen/margin_nl"
-      android:text="Additional information required."
+      android:text="@string/twofa_subtitle"
       android:textColor="@color/textSecondaryLightBg"
       android:textSize="@dimen/fs_body_regular"
       app:layout_constraintTop_toBottomOf="@id/txtSite"
@@ -46,7 +46,7 @@
       android:layout_height="0dp"
       android:layout_marginTop="@dimen/margin_nl"
       app:layout_constraintBottom_toTopOf="@id/btnAddSite"
-      app:layout_constraintTop_toBottomOf="@id/txtAdditionalInfo"
+      app:layout_constraintTop_toBottomOf="@id/txtDescription"
       />
 
   <com.joanzapata.iconify.widget.IconButton

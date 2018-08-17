@@ -13,5 +13,6 @@ data class LinkingSiteEvent(
   val jobId: String,
   val eventType: LinkingSiteEventType,
   val twoFaCredentials: List<TwoFaCredential>?,
-  val twoFaImages: List<TwoFaImage>?
+  val twoFaImages: List<TwoFaImage>?,
+  val label: String = ""
 ) : Serializable

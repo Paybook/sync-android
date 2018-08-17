@@ -1,6 +1,7 @@
 package com.paybook.sync.features.linkingsite.twofa.simpletwofa
 
 import com.paybook.core.exception.OnErrorNotImplementedException
+import com.paybook.core.schedulers.SchedulerProvider
 import com.paybook.sync.SyncModule
 import com.paybook.sync.features.linkingsite.LinkingSiteData
 import com.paybook.sync.useCases.VerifyTwoFaUseCase
@@ -16,9 +17,9 @@ import java.io.IOException
 class TwoFaPresenter(
   private val view: TwoFaContract.View,
   private val navigator: TwoFaContract.Navigator,
-  private val verifyTwoFaUseCase: VerifyTwoFaUseCase
+  private val verifyTwoFaUseCase: VerifyTwoFaUseCase,
+  private val schedulerProvider: SchedulerProvider = SyncModule.scheduler
 ) : TwoFaContract.Presenter {
-  private val schedulerProvider = SyncModule.scheduler
 
   override fun onSendCredentials(event: LinkingSiteEvent, credentials: Map<String, String>): Disposable? {
     view.showLoading()

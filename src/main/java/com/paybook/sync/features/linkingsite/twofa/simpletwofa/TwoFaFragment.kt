@@ -58,7 +58,7 @@ class TwoFaFragment : BaseFragment(), TwoFaContract.View {
     inflater: LayoutInflater,
     container: ViewGroup?
   ): View {
-    val root = inflater.inflate(R.layout.activity_two_fa, container, false)
+    val root = inflater.inflate(R.layout.fragment_two_fa, container, false)
     siteNameView = root.findViewById(R.id.txtSite)
     credentialsView = root.findViewById(R.id.listCredentials)
     nextButton = root.findViewById(R.id.btnAddSite)
