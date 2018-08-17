@@ -18,7 +18,6 @@ import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
 import com.paybook.sync.entities.twofa.TwoFaCredential
 import com.paybook.sync.entities.twofa.TwoFaImage
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.OkHttpClient
@@ -62,8 +61,7 @@ class LinkingSiteBroadcastService : BaseService() {
         .build()
     val imageConverter = TwoFaImageConverter(jobId, this)
 
-
-    val d =  AddAccountRxWebSocket.stream(client, webSocket)
+    val d = AddAccountRxWebSocket.stream(client, webSocket)
         .observeOn(schedulerProvider.io())
         .doOnTerminate {
           imageConverter.clear()
@@ -73,13 +71,16 @@ class LinkingSiteBroadcastService : BaseService() {
         .filter { e -> e.type === AddAccountRxWebSocket.SocketEventType.MESSAGE }
         .doOnNext { Log.e("RX-DELAY", it.toString()) }
         .map { r -> linkingSite(organization, site, jobId, r.payload!!, imageConverter) }
-        .doOnComplete { Log.e("RX", "Complete") }
+        .doOnComplete {
+          Log.e("RX", "Complete")
+          repository.clear(jobId = jobId)
+        }
         .flatMap {
           repository.saveEvent(it)
               .andThen(Single.just(it))
               .toFlowable()
         }
-        .subscribe({ event: LinkingSiteEvent  ->
+        .subscribe({ event: LinkingSiteEvent ->
           repository.saveEvent(event)
           val i = Intent(ACTION_LINKING_SITE_EVENT)
           i.putExtra(IK_DATA, event)
