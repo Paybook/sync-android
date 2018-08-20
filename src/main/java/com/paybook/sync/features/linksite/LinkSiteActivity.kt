@@ -14,19 +14,37 @@ import com.evernote.android.state.State
 import com.paybook.sync.R
 import com.paybook.sync.SyncModule
 import com.paybook.sync.base.BaseActivity
-import com.paybook.sync.features.linkingsite.background.LinkingSiteBroadcastService
-import com.paybook.sync.useCases.LinkAccountUseCase
 import com.paybook.sync.entities.AddingAccount
 import com.paybook.sync.entities.Credential
 import com.paybook.sync.entities.LinkSiteRequest
 import com.paybook.sync.entities.Organization
 import com.paybook.sync.entities.Site
+import com.paybook.sync.features.linkingsite.background.LinkingSiteBroadcastService
+import com.paybook.sync.useCases.LinkAccountUseCase
 
 /**
  * Created by Gerardo Teruel on 9/5/17.
  */
 
 class LinkSiteActivity : BaseActivity(), LinkSiteContract.View {
+
+  companion object {
+
+    private const val IK_ORGANIZATION = "com.paybook.paybook.linksite.organization"
+    private const val IK_SITE = "com.paybook.paybook.linksite.site"
+
+    // Creational methods.
+    fun newIntent(
+      from: Context,
+      organization: Organization,
+      site: Site
+    ): Intent {
+      val i = Intent(from, LinkSiteActivity::class.java)
+      i.putExtra(IK_ORGANIZATION, organization)
+      i.putExtra(IK_SITE, site)
+      return i
+    }
+  }
 
   @State var organization: Organization? = null
   @State var site: Site? = null
@@ -110,11 +128,13 @@ class LinkSiteActivity : BaseActivity(), LinkSiteContract.View {
   }
 
   override fun showError(message: String) {
-    Snackbar.make(credentialsView, message, Snackbar.LENGTH_LONG).show()
+    Snackbar.make(credentialsView, message, Snackbar.LENGTH_LONG)
+        .show()
   }
 
   override fun showNetworkError() {
-    Snackbar.make(credentialsView, R.string.msg_network_error, Snackbar.LENGTH_SHORT).show()
+    Snackbar.make(credentialsView, R.string.msg_network_error, Snackbar.LENGTH_SHORT)
+        .show()
   }
 
   override fun showLoadingIndicator() {
@@ -131,21 +151,4 @@ class LinkSiteActivity : BaseActivity(), LinkSiteContract.View {
     linkButton.visibility = View.INVISIBLE
   }
 
-  companion object {
-
-    private const val IK_ORGANIZATION = "com.paybook.paybook.linksite.organization"
-    private const val IK_SITE = "com.paybook.paybook.linksite.site"
-
-    // Creational methods.
-    fun newIntent(
-      from: Context,
-      organization: Organization,
-      site: Site
-    ): Intent {
-      val i = Intent(from, LinkSiteActivity::class.java)
-      i.putExtra(IK_ORGANIZATION, organization)
-      i.putExtra(IK_SITE, site)
-      return i
-    }
-  }
 }
