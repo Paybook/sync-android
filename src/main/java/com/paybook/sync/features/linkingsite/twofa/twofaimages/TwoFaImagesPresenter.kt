@@ -1,6 +1,8 @@
 package com.paybook.sync.features.linkingsite.twofa.twofaimages
 
 import com.paybook.core.exception.OnErrorNotImplementedException
+import com.paybook.core.schedulers.SchedulerProvider
+import com.paybook.sync.SyncModule
 import com.paybook.sync.useCases.VerifyTwoFaImagesUseCase
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.twofa.TwoFaImage
@@ -13,7 +15,8 @@ import io.reactivex.disposables.Disposable
 class TwoFaImagesPresenter(
   private val view: TwoFaImagesContract.View,
   private val navigator: TwoFaImagesContract.Navigator,
-  private val twoFaImagesUseCase: VerifyTwoFaImagesUseCase
+  private val twoFaImagesUseCase: VerifyTwoFaImagesUseCase,
+  private val schedulerProvider: SchedulerProvider = SyncModule.scheduler
 ) : TwoFaImagesContract.Presenter {
 
   override fun submitImage(
@@ -26,6 +29,7 @@ class TwoFaImagesPresenter(
     }
     view.showLoading()
     return twoFaImagesUseCase.verify(event.jobId, value.value)
+        .observeOn(schedulerProvider.ui())
         .subscribe({ response ->
           view.hideLoading()
           when {
@@ -33,7 +37,9 @@ class TwoFaImagesPresenter(
             response.isError -> view.showUnexpectedError()
             response.isSuccess -> navigator.openLinkingSite(event)
           }
-        }) { t -> OnErrorNotImplementedException.rethrow(t, javaClass) }
+        }) { t ->
+          throw OnErrorNotImplementedException(t)
+        }
   }
 
   override fun subscribe(event: LinkingSiteEvent) {

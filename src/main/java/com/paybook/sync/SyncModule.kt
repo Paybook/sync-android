@@ -40,14 +40,16 @@ class SyncModule private constructor() {
 
     var isTest: Boolean = false
 
-    fun configure(
-      homeIntentFactory: IntentFactory,
-      token: String? = null
-    ) {
+    fun setNavigation(homeIntentFactory: IntentFactory) {
       this.homeIntentFactory = homeIntentFactory
-      token?.let {
-        this.tokenRepository.setToken(it)
-      }
+    }
+
+    fun setToken(token: String) {
+      this.tokenRepository.setToken(token)
+    }
+
+    fun clearToken() {
+      this.tokenRepository.clear()
     }
 
     fun init(

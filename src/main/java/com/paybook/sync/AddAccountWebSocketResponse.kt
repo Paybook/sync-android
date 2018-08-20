@@ -15,16 +15,16 @@ import com.paybook.sync.entities.LinkingSiteEventType.TWO_FA_IMAGES
 import com.paybook.sync.entities.twofa.TwoFaCredential
 import java.util.ArrayList
 
+@Suppress("MemberVisibilityCanBePrivate")
 /**
  * Created by Gerardo Teruel on 10/16/17.
  */
 
-class AddAccountWebSocketResponse(
-  @SerializedName("code") var code: Int = 0,
+data class AddAccountWebSocketResponse(
+  @SerializedName("code") var code: Int,
   @SerializedName("twofa") var twofa: List<TwoFa>? = null
 ) {
 
-  @Suppress("MemberVisibilityCanBePrivate")
   val isProcessing: Boolean
     get() = code in 100..103
 
@@ -43,11 +43,14 @@ class AddAccountWebSocketResponse(
   val isUserLoggedIn: Boolean
     get() = code == 406
 
+  val isTwoFaNeeded: Boolean
+    get() = code == 410
+
   val isNormalTwoFaNeeded: Boolean
-    get() = code == 410 && twofa!![0].type != "twoFaImages"
+    get() = isTwoFaNeeded && !isImageTwoFaNeeded
 
   val isImageTwoFaNeeded: Boolean
-    get() = code == 410 && twofa!![0].type == "twoFaImages"
+    get() = isTwoFaNeeded && twofa!!.first().twoFaImages != null
 
   val isTimeOut: Boolean
     get() = code == 411 || code == 413
@@ -55,27 +58,16 @@ class AddAccountWebSocketResponse(
   val isServerError: Boolean
     get() = code in 500..599
 
-  val credentials: List<TwoFaCredential>
-    get() {
-      val out = ArrayList<TwoFaCredential>()
-      for (twofa in this.twofa!!) {
-        out.add(TwoFaCredential(twofa.name!!, twofa.type!!, twofa.label!!))
-      }
-      return out
-    }
+  val credentials: List<TwoFaCredential>?
+    get() = twofa?.map { TwoFaCredential(it.name, it.type, it.label) }
+
+  val label: String
+    get() = twofa?.firstOrNull()?.label ?: ""
 
   val imageOptions: List<TwoFaImageResponse>?
-    get() = twofa!![0].twoFaImages
+    get() = twofa?.firstOrNull()?.twoFaImages
 
-  val twoFaLabel: String?
-    get() = twofa!![0].label
 
-  val isTwoFaNeeded: Boolean
-    get() = code == 410
-
-  override fun toString(): String {
-    return "AddAccountWebSocketResponse{" + "code=" + code + ", twofa=" + twofa + '}'.toString()
-  }
 
   fun toEvent(): LinkingSiteEventType {
     return when {
@@ -84,12 +76,12 @@ class AddAccountWebSocketResponse(
       isUserLoggedIn -> ALREADY_LOGGED_IN
       isError -> INCORRECT_CREDENTIALS
       isTimeOut -> TIMEOUT
-      isNormalTwoFaNeeded -> TWO_FA
       isImageTwoFaNeeded -> TWO_FA_IMAGES
+      isNormalTwoFaNeeded -> TWO_FA
       isServerError -> SERVER_ERROR
       isProcessing -> PROCESSING
       checkWebsite -> CHECK_WEBSITE
-      else -> throw IllegalStateException("Cannot linkingSite to event " + toString())
+      else -> throw IllegalStateException("Cannot linkingSite to event $this")
     }
   }
 
@@ -97,21 +89,20 @@ class AddAccountWebSocketResponse(
     val event = toEvent()
     return event in listOf(TIMEOUT, INCORRECT_CREDENTIALS, SERVER_ERROR, ACCOUNT_LOCKED, ALREADY_LOGGED_IN, SUCCESS)
   }
-
 }
 
 data class TwoFa(
-  @SerializedName("name") var name: String? = null,
-  @SerializedName("type") var type: String? = null,
-  @SerializedName("label") var label: String? = null,
-  @SerializedName("twoFaImages") var twoFaImages: List<TwoFaImageResponse>? = null
+  @SerializedName("name") var name: String,
+  @SerializedName("type") var type: String,
+  @SerializedName("label") var label: String,
+  @SerializedName("options") var twoFaImages: List<TwoFaImageResponse>? = null
 )
 
 data class TwoFaImageResponse(
-  @SerializedName("imgURL") var imgUrl: String? = null,
-  @SerializedName("imgBase64File") var img: String? = null,
-  @SerializedName("value") var value: Int = 0
+  @SerializedName("imgURL") var imgURL: String? = null,
+  @SerializedName("imgBase64File") var imgBase64File: String? = null,
+  @SerializedName("value") var value: Int
 ) {
   val isUrl: Boolean
-    get() = imgUrl != null
+    get() = imgURL != null
 }

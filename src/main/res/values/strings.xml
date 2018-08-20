@@ -35,4 +35,5 @@
   <string name="screen_linking_site_description_visit_website">Check your institution\'s website to check that it\'s working properly.</string>
   <string name="channel_name">Add account</string>
   <string name="channel_description">All notifications related to when you\'re linking a bank account.</string>
+  <string name="twofa_subtitle">Additional information required.</string>
 </resources>

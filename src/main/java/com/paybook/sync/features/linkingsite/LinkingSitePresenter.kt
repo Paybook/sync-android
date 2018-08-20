@@ -1,5 +1,6 @@
 package com.paybook.sync.features.linkingsite
 
+import android.util.Log
 import com.paybook.core.exception.OnErrorNotImplementedException
 import com.paybook.sync.entities.LinkingSiteEvent
 import com.paybook.sync.entities.LinkingSiteEventType.ACCOUNT_LOCKED
@@ -46,24 +47,25 @@ class LinkingSitePresenter(
         CHECK_WEBSITE -> navigator.openError(
             descriptionVisitWebsite(), event.organization, event.site
         )
+        TWO_FA_IMAGES -> {
+          Log.e("pRES", "Two fa images")
+          navigator.openTwoFaImagesScreen(event)
+        }
         TWO_FA -> navigator.openTwoFaScreen(event)
-        TWO_FA_IMAGES -> navigator.openTwoFaImagesScreen(event)
       }
     }
   }
 
   override fun subscribe(jobId: String): Disposable? {
     view.registerForLinkingSiteEvents()
-    repository.event(jobId)
-        ?.let {
-          return it.subscribe({ event ->
-            onEvent(event)
-          }) {
-            throw OnErrorNotImplementedException(it)
-          }
+    return repository.event(jobId)
+        .subscribe({
+          onEvent(it)
+        }, {
+          throw OnErrorNotImplementedException(it)
+        }) {
+          navigator.openLoading()
         }
-    navigator.openLoading()
-    return null
   }
 
   override fun onReattemptLink(

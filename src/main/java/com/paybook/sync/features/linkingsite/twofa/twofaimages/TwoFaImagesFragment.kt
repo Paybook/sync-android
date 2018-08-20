@@ -32,6 +32,7 @@ class TwoFaImagesFragment : BaseFragment(), TwoFaImagesContract.View {
   private lateinit var credentialsView: RecyclerView
   private lateinit var nextButton: Button
   private lateinit var loadingIndicator: View
+  private lateinit var txtDescription: TextView
 
   lateinit var presenter: TwoFaImagesContract.Presenter
   lateinit var adapter: TwoFaImagesAdapter
@@ -53,21 +54,23 @@ class TwoFaImagesFragment : BaseFragment(), TwoFaImagesContract.View {
   }
 
   // Lifecycle methods.
+  override fun getFieldsFromArguments(arguments: Bundle?) {
+    event = arguments!!.getSerializable(IK_DATA) as LinkingSiteEvent
+  }
+
   override fun setView(
     inflater: LayoutInflater,
     container: ViewGroup?
   ): View {
-    val root = inflater.inflate(R.layout.activity_two_fa, container, false)
+    val root = inflater.inflate(R.layout.fragment_two_fa, container, false)
     siteNameView = root.findViewById(R.id.txtSite)
     credentialsView = root.findViewById(R.id.listCredentials)
     nextButton = root.findViewById(R.id.btnAddSite)
     loadingIndicator = root.findViewById(R.id.loadingIndicator)
+    txtDescription = root.findViewById(R.id.txtDescription)
     return root
   }
 
-  override fun getFieldsFromArguments(arguments: Bundle?) {
-    event = arguments!!.getSerializable(IK_DATA) as LinkingSiteEvent
-  }
 
   override fun inject() {
     nextButton.setOnClickListener { onSubmitImage() }
@@ -115,6 +118,7 @@ class TwoFaImagesFragment : BaseFragment(), TwoFaImagesContract.View {
   // View methods
   override fun show(event: LinkingSiteEvent) {
     this.event = event
+    txtDescription.text = event.label
     showSite(event.site)
     showTwoFaImages(event.twoFaImages!!)
   }

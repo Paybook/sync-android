@@ -1,8 +1,9 @@
 package com.paybook.sync.util
 
 import android.content.Context
+import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
-import io.reactivex.Single
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.ObjectInputStream
@@ -21,8 +22,8 @@ class FileStorage(context: Context) {
   fun <T : Serializable> store(
     key: String,
     value: T
-  ): Observable<Boolean> {
-    return Observable.defer {
+  ): Completable {
+    return Completable.defer {
       val context = contextReference.get()!!.applicationContext
       try {
         context.openFileOutput(key, Context.MODE_PRIVATE)
@@ -31,38 +32,31 @@ class FileStorage(context: Context) {
               objectOutputStream.writeObject(value)
               objectOutputStream.close()
             }
+        Completable.complete()
       } catch (e: IOException) {
-        throw IllegalStateException("Couldn't open file for files", e)
+        Completable.error(IllegalStateException("Couldn't open file for files", e))
       }
-
-      Observable.just(true)
     }
   }
 
-  fun <T> retrieve(key: String): Single<T>? {
-    var ready = true
-    val source = Single.defer {
-      val context = contextReference.get()!!.applicationContext
+  fun <T : Serializable> retrieve(key: String): Maybe<T> {
+    return Maybe.defer {
       try {
-        context.openFileInput(key)
-            .use { `is` ->
-              val objectInputStream = ObjectInputStream(`is`)
+        contextReference.get()!!.openFileInput(key)
+            .use { inputStream ->
+              val objectInputStream = ObjectInputStream(inputStream)
               @Suppress("UNCHECKED_CAST")
-              Single.just<T>(objectInputStream.readObject() as T)
+              Maybe.just(objectInputStream.readObject() as T)
             }
       } catch (e: FileNotFoundException) {
-        ready = false
-        null
+        Maybe.empty<T>()
       } catch (e: IOException) {
         throw IllegalStateException(e)
       } catch (e: ClassNotFoundException) {
         throw IllegalStateException(e)
       }
+
     }
-    if (ready) {
-      return source
-    }
-    return null
   }
 
   fun clear(key: String): Observable<Boolean> {
