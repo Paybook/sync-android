@@ -8,7 +8,7 @@ import java.math.BigDecimal
  * Created by Gerardo Teruel on 5/16/17.
  */
 
-public data class Paybook(
+data class Paybook(
   val id: String,
   val paybookThemeId: String,
   val paybookThemeTypeId: String?,
@@ -23,16 +23,16 @@ public data class Paybook(
 ) : Serializable {
 
   val isAccount: Boolean
-    get() = paybookThemeId == "520d33d33b8e77a40c000000"
+    get() = paybookThemeId == ACCOUNT_ID
 
   val isBrand: Boolean
-    get() = paybookThemeId == "523be6283b8e779c038b4578"
+    get() = paybookThemeId == BRAND_ID
 
   val isManualAccount: Boolean
     get() = paybookThemeTypeId != null && paybookThemeTypeId == MANUAL_ACCOUNT_ID
 
   val isCategory: Boolean
-    get() = paybookThemeId == "527ac4b7c690166a408b4567"
+    get() = paybookThemeId == CATEGORY_ID
 
   companion object {
     const val MANUAL_ACCOUNT_ID = "520d34cb3b8e77cb0c000000"
