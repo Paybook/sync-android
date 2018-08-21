@@ -15,7 +15,7 @@ data class Paybook(
   val title: String,
   val imageUrl: String?,
   val userImageUrl: String?,
-  val balance: BigDecimal?,
+  val balance: BigDecimal,
   val icon: String,
   val currency: Currency,
   val children: List<Paybook>,

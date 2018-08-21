@@ -10,5 +10,6 @@ data class Currency(
   val id: String,
   val name: String,
   val code: String,
-  val symbol: String = "$"
+  val symbol: String = "$",
+  val decimals: Int = 2
 ) : Serializable
