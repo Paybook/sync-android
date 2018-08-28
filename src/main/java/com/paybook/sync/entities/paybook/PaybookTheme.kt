@@ -13,5 +13,6 @@ data class PaybookTheme(
   val name: String,
   val icon: String,
   val balance: BigDecimal,
-  @ColorInt val color: Int
+  @ColorInt val color: Int,
+  val children: List<PaybookThemeType>
 ) : Serializable
