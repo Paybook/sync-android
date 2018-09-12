@@ -15,8 +15,12 @@ import java.io.EOFException
  * Created by Gerardo Teruel on 10/17/17.
  */
 
-object AddAccountRxWebSocket {
+data class UnexpectedSyncResponseException(
+  val payload: String,
+  val url: String
+) : RuntimeException("WS: $url\nPayload:$payload")
 
+object AddAccountRxWebSocket {
 
   /** Use this method to get an stream for socket events.  */
   fun stream(
@@ -44,6 +48,9 @@ object AddAccountRxWebSocket {
           val gson = Gson()
           Log.e("WS", text)
           val payload = gson.fromJson(text, AddAccountWebSocketResponse::class.java)
+          if (payload.code == 0) {
+            throw UnexpectedSyncResponseException(text!!, url)
+          }
           e.onNext(payload)
           if (payload.isTerminal()) {
             e.onComplete()
