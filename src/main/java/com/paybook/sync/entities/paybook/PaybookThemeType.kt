@@ -12,5 +12,6 @@ data class PaybookThemeType(
   val icon: String,
   val balance: BigDecimal,
   val children: List<Paybook>,
-  @ColorInt val color: Int
+  @ColorInt val color: Int,
+  val cover: String
 )
