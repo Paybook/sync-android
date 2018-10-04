@@ -33,14 +33,18 @@ class SyncResult<T>(val result: Result<T>) {
   val isSuccess: Boolean
     get() = !result.isError && result.response()!!.isSuccessful
 
-  fun error(): Exception {
-    return if (result.isError) {
-      result.error() as Exception
+  private val error: Throwable by lazy {
+    if (result.isError) {
+      result.error()!!
     } else if (!result.response()!!.isSuccessful) {
       SyncUnsuccesfulResponseException(unsuccesfulResponse())
     } else {
       IllegalStateException("Trying to get an error from a successful result")
     }
+  }
+
+  fun error(): Throwable {
+    return error
   }
 
   /**
