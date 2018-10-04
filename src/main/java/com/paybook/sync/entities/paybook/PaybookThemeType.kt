@@ -1,5 +1,7 @@
 package com.paybook.sync.entities.paybook
 
+import android.support.annotation.ColorInt
+import java.io.Serializable
 import java.math.BigDecimal
 
 /**
@@ -10,5 +12,7 @@ data class PaybookThemeType(
   val name: String,
   val icon: String,
   val balance: BigDecimal,
-  val children: List<Paybook>
-)
+  val children: List<Paybook>,
+  @ColorInt val color: Int,
+  val cover: String
+): Serializable

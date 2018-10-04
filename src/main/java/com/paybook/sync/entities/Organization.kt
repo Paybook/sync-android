@@ -33,7 +33,7 @@ data class Organization(
   val isDigitalWallet: Boolean
     get() = this.typeId == "57fed63a78480609038b4568"
 
-  /** Two organizations are equal if they share the same id.  */
+  /** Two organizations are equal if they share the same paybookId.  */
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other == null || javaClass != other.javaClass) return false
